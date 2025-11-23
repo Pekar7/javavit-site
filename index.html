@@ -1,583 +1,1139 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <title>JavaVIT — Разработка на Java и Telegram-боты</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="JavaVIT — разработка backend-систем на Java, интеграции, Telegram-боты и обучение." />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaVIT — разработка на заказ</title>
     <style>
-        * { box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
-            --bg-main: #020617;
-            --bg-section: #020617;
-            --accent1: #1d4ed8;
-            --accent2: #22c55e;
-            --accent3: #6366f1;
+            --bg: #020617;
+            --bg-elevated: rgba(15, 23, 42, 0.96);
+            --border-subtle: rgba(148, 163, 184, 0.4);
             --text-main: #e5e7eb;
             --text-muted: #9ca3af;
-            --card-bg: rgba(15, 23, 42, 0.9);
-            --border-soft: rgba(148, 163, 184, 0.25);
-            --radius-lg: 18px;
-            --radius-xl: 24px;
-            --shadow-soft: 0 22px 45px rgba(15, 23, 42, 0.7);
+            --accent: #6366f1;
+            --accent-soft: rgba(99, 102, 241, 0.3);
+            --accent-2: #ec4899;
+            --accent-3: #22c55e;
+            --glow: rgba(129, 140, 248, 0.9);
+            --radius-lg: 24px;
+            --radius-md: 18px;
+            --shadow-strong: 0 32px 120px rgba(15, 23, 42, 0.9);
+            --grid-color: rgba(15, 23, 42, 0.7);
         }
+
         body {
-            margin: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background: radial-gradient(circle at top left, #1f2937 0, #020617 45%, #020617 100%);
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+            "Segoe UI", Roboto, sans-serif;
+            background: radial-gradient(circle at top, #020617 0, #000 55%, #020617 100%);
             color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        a { color: inherit; text-decoration: none; }
-        img { max-width: 100%; display: block; }
-        .page {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 18px 18px 48px;
-        }
-        .hero-wrapper {
-            position: relative;
+
+        /* ==== ФОН: сетка + орбы ==== */
+
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
             overflow: hidden;
-            border-radius: 32px;
-            padding: 22px 22px 28px;
-            background:
-                radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.22), transparent 55%),
-                radial-gradient(circle at 100% 0%, rgba(129, 140, 248, 0.22), transparent 55%),
-                radial-gradient(circle at 50% 120%, rgba(34, 197, 94, 0.25), transparent 55%),
-                linear-gradient(135deg, #020617 0%, #020617 28%, #020617 100%);
-            border: 1px solid rgba(148, 163, 184, 0.35);
-            box-shadow: var(--shadow-soft);
         }
-        .hero-wave { position: absolute; inset: 0; pointer-events: none; opacity: 0.35; }
-        .hero-wave::before {
-            content: "";
+
+        .bg-grid {
             position: absolute;
-            inset: -40% -10%;
-            background:
-                radial-gradient(circle at 0% 40%, rgba(59, 130, 246, 0.25), transparent 55%),
-                radial-gradient(circle at 80% 10%, rgba(236, 72, 153, 0.25), transparent 55%),
-                radial-gradient(circle at 60% 100%, rgba(45, 212, 191, 0.25), transparent 55%);
-            mix-blend-mode: screen;
-            transform: skewY(-6deg);
+            inset: 0;
+            background-image:
+                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            background-size: 70px 70px;
+            opacity: 0.3;
+            transform: perspective(800px) rotateX(60deg) translateY(-30%);
+            transform-origin: top;
         }
-        .header {
+
+        .bg-gradient-orb {
+            position: absolute;
+            border-radius: 999px;
+            filter: blur(70px);
+            opacity: 0.45;
+            mix-blend-mode: screen;
+            animation: pulseOrb 18s ease-in-out infinite alternate;
+        }
+
+        .bg-orb-1 {
+            width: 520px;
+            height: 520px;
+            background: conic-gradient(from 120deg, #4f46e5, #22c55e, #06b6d4, #a855f7, #4f46e5);
+            top: -210px;
+            left: -180px;
+        }
+
+        .bg-orb-2 {
+            width: 420px;
+            height: 420px;
+            background: radial-gradient(circle, #ec4899, #a855f7, transparent 65%);
+            bottom: -180px;
+            right: -120px;
+        }
+
+        .bg-orb-3 {
+            width: 360px;
+            height: 360px;
+            background: radial-gradient(circle, #22c55e, #0ea5e9, transparent 65%);
+            top: 45%;
+            right: 10%;
+        }
+
+        @keyframes pulseOrb {
+            0% { transform: translate3d(0, 0, 0) scale(1); }
+            50% { transform: translate3d(40px, -20px, 0) scale(1.05); }
+            100% { transform: translate3d(-30px, 25px, 0) scale(0.97); }
+        }
+
+        /* ==== Контейнер + навбар ==== */
+
+        .shell {
+            max-width: 1180px;
+            margin: 0 auto;
+            padding: 32px 20px 64px;
             position: relative;
-            z-index: 2;
+            z-index: 1;
+        }
+
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(16px);
+            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.92), transparent);
+            margin: -32px -20px 24px;
+            padding: 18px 32px 8px;
+        }
+
+        .topbar-inner {
+            max-width: 1180px;
+            margin: 0 auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 24px;
-            margin-bottom: 24px;
+            gap: 16px;
         }
-        .logo { display: flex; align-items: center; gap: 10px; }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
         .logo-mark {
-            width: 34px; height: 34px;
+            width: 32px;
+            height: 32px;
             border-radius: 12px;
-            background: conic-gradient(
-                from 160deg,
-                #22c55e,#22c55e,#22c55e,#1d4ed8,#6366f1,#e11d48,#22c55e
-            );
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
+            background: conic-gradient(from 150deg, #22c55e, #06b6d4, #6366f1, #a855f7, #ec4899, #22c55e);
+            box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9), 0 0 26px rgba(129, 140, 248, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #020617;
+            font-weight: 800;
+            font-size: 18px;
         }
-        .logo-mark span { font-size: 18px; font-weight: 800; color: #020617; }
-        .logo-text-main {
-            font-size: 22px; font-weight: 700;
-            letter-spacing: 0.06em; text-transform: uppercase;
+
+        .logo-title {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
         }
-        .logo-text-sub {
-            font-size: 11px; text-transform: uppercase;
-            letter-spacing: 0.14em; color: var(--text-muted);
-        }
-        .nav {
-            display: flex; flex-wrap: wrap;
-            gap: 8px 18px;
-            font-size: 13px;
+
+        .logo-title-main {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
+        }
+
+        .logo-title-sub {
+            font-size: 11px;
             letter-spacing: 0.16em;
+            text-transform: uppercase;
             color: var(--text-muted);
         }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            font-size: 12px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(209, 213, 219, 0.9);
+        }
+
         .nav a {
             position: relative;
-            padding-bottom: 4px;
-            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            padding-bottom: 3px;
         }
+
         .nav a::after {
             content: "";
             position: absolute;
-            left: 0; bottom: 0;
-            width: 0; height: 1px;
-            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            left: 0;
+            bottom: 0;
+            width: 0;
+            height: 1px;
+            background: linear-gradient(to right, var(--accent), var(--accent-2));
             transition: width 0.2s ease-out;
         }
-        .nav a:hover::after { width: 100%; }
-        .hero {
-            position: relative; z-index: 2;
-            display: grid;
-            grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
-            gap: 32px; align-items: center;
+
+        .nav a:hover::after {
+            width: 100%;
         }
-        .hero-label {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 4px 10px; border-radius: 999px;
-            background: rgba(15, 23, 42, 0.86);
-            border: 1px solid rgba(148, 163, 184, 0.4);
-            font-size: 11px; color: var(--text-muted);
-            margin-bottom: 14px;
-        }
-        .hero-label-dot {
-            width: 8px; height: 8px; border-radius: 999px;
-            background: radial-gradient(circle,#4ade80 0,#22c55e 60%,#16a34a 100%);
-            box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
-        }
-        .hero-title {
-            font-size: clamp(28px, 4vw, 36px);
-            line-height: 1.1;
-            margin: 0 0 10px;
-        }
-        .hero-title span.gradient {
-            background: linear-gradient(90deg,#22c55e,#2dd4bf,#60a5fa);
-            -webkit-background-clip: text;
-            color: transparent;
-        }
-        .hero-subtitle {
-            font-size: 15px; line-height: 1.6;
-            color: var(--text-muted);
-            max-width: 520px;
-            margin-bottom: 20px;
-        }
-        .hero-badges {
-            display: flex; flex-wrap: wrap;
-            gap: 8px; margin-bottom: 22px;
-        }
-        .badge {
-            padding: 4px 10px; border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.4);
-            font-size: 11px; color: var(--text-muted);
-            background: rgba(15, 23, 42, 0.86);
-        }
-        .hero-actions {
-            display: flex; flex-wrap: wrap;
-            gap: 10px; align-items: center;
-        }
-        .btn-primary, .btn-ghost {
-            display: inline-flex; align-items: center; justify-content: center;
-            gap: 8px;
-            padding: 9px 16px;
+
+        .nav-cta {
+            padding: 6px 10px;
             border-radius: 999px;
-            border: 1px solid transparent;
-            font-size: 13px; font-weight: 500;
-            cursor: pointer;
-            transition: transform 0.12s ease-out, box-shadow 0.12s ease-out,
-                        background 0.2s ease-out, border-color 0.2s ease-out;
-            white-space: nowrap;
-        }
-        .btn-primary {
-            background: linear-gradient(135deg,#22c55e,#14b8a6,#3b82f6);
-            box-shadow: 0 14px 30px rgba(56, 189, 248, 0.3);
-            color: #020617;
-        }
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 18px 34px rgba(59, 130, 246, 0.35);
-        }
-        .btn-ghost {
-            background: rgba(15, 23, 42, 0.9);
-            border-color: rgba(148, 163, 184, 0.5);
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.4), transparent 55%);
+            text-decoration: none;
             color: var(--text-main);
-        }
-        .btn-ghost:hover {
-            background: rgba(15, 23, 42, 0.96);
-            border-color: rgba(148, 163, 184, 0.9);
-            transform: translateY(-1px);
-        }
-        .btn-icon { font-size: 14px; opacity: 0.9; }
-        .hero-note {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 8px;
-        }
-        .hero-card {
-            position: relative;
-            border-radius: var(--radius-xl);
-            background:
-                radial-gradient(circle at top, rgba(37, 99, 235, 0.35), transparent 55%),
-                radial-gradient(circle at bottom, rgba(16, 185, 129, 0.3), transparent 55%),
-                #020617;
-            border: 1px solid rgba(148, 163, 184, 0.4);
-            padding: 16px 16px 18px;
-            overflow: hidden;
-        }
-        .hero-card-header {
-            display: flex; align-items: center; justify-content: space-between;
-            gap: 10px; margin-bottom: 12px;
-            font-size: 11px; color: var(--text-muted);
-        }
-        .hero-card-title { font-size: 13px; font-weight: 500; color: var(--text-main); }
-        .hero-card-body {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            gap: 14px; align-items: flex-start;
-        }
-        .hero-list {
-            font-size: 12px;
-            color: var(--text-muted);
-            padding-left: 16px;
-            margin: 0;
-        }
-        .hero-list li { margin-bottom: 5px; }
-        .hero-tag-grid {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 6px;
             font-size: 11px;
         }
-        .hero-tag {
-            border-radius: 999px;
-            padding: 5px 8px;
-            background: rgba(15, 23, 42, 0.96);
-            border: 1px solid rgba(148, 163, 184, 0.45);
-            display: flex; align-items: center; justify-content: space-between;
-        }
-        .hero-tag span { opacity: 0.8; }
-        .hero-tag strong { font-size: 11px; }
-        section { margin-top: 40px; }
-        .section-title { font-size: 18px; margin: 0 0 6px; }
-        .section-subtitle {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin: 0 0 18px;
-        }
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 16px;
-        }
-        .card {
-            border-radius: var(--radius-lg);
-            background: var(--card-bg);
-            border: 1px solid var(--border-soft);
-            padding: 14px 14px 16px;
-        }
-        .card-label {
-            font-size: 11px;
-            color: var(--text-muted);
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            margin-bottom: 4px;
-        }
-        .card-title { font-size: 15px; margin-bottom: 6px; }
-        .card-text {
-            font-size: 13px;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-        .card-list {
-            font-size: 12px;
-            padding-left: 16px;
-            color: var(--text-muted);
-        }
-        .card-list li { margin-bottom: 4px; }
-        .pill-row {
-            display: flex; flex-wrap: wrap;
-            gap: 6px; margin-top: 8px;
-        }
-        .pill {
-            font-size: 11px;
-            padding: 3px 8px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.5);
-            background: rgba(15, 23, 42, 0.9);
-            color: var(--text-muted);
-        }
-        .split {
+
+        /* ==== Hero: два столбца ==== */
+
+        .hero {
             display: grid;
             grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-            gap: 20px;
-        }
-        .resume-box {
-            border-radius: var(--radius-lg);
-            background: var(--card-bg);
-            border: 1px solid var(--border-soft);
-            padding: 14px 14px 16px;
-            font-size: 13px;
-        }
-        .resume-box h3 { margin: 0 0 4px; font-size: 15px; }
-        .resume-line {
-            display: flex; justify-content: space-between;
-            font-size: 12px; color: var(--text-muted);
-        }
-        .resume-stack {
-            margin-top: 8px;
-            font-size: 12px;
-            color: var(--text-muted);
-        }
-        .contacts-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 16px;
-        }
-        .contact-item { font-size: 13px; color: var(--text-muted); }
-        .contact-label {
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            margin-bottom: 4px;
-            color: var(--text-muted);
-        }
-        .contact-value { font-size: 13px; }
-        footer {
+            gap: 40px;
+            align-items: center;
             margin-top: 32px;
-            padding-top: 14px;
-            border-top: 1px solid rgba(148, 163, 184, 0.35);
-            display: flex; flex-wrap: wrap;
-            align-items: center; gap: 10px;
+            margin-bottom: 56px;
+        }
+
+        .hero-left {
+            position: relative;
+        }
+
+        .hero-kicker {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            background: rgba(15, 23, 42, 0.9);
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .hero-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            background: radial-gradient(circle, #22c55e 0, #22c55e 50%, transparent 80%);
+            box-shadow: 0 0 16px rgba(34, 197, 94, 0.9);
+        }
+
+        .hero-title {
+            font-size: clamp(2.6rem, 5vw, 3.8rem);
+            font-weight: 800;
+            letter-spacing: -0.04em;
+            line-height: 1.03;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, #e5e7eb 0%, #a5b4fc 40%, #f9a8d4 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-title span {
+            background: linear-gradient(135deg, #4f46e5, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-text {
+            font-size: 0.98rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 520px;
+            margin-bottom: 22px;
+        }
+
+        .hero-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 26px;
+        }
+
+        .chip {
+            font-size: 0.78rem;
+            padding: 6px 10px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.4), transparent 65%);
+            color: rgba(229, 231, 235, 0.9);
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-primary {
+            border: none;
+            border-radius: 999px;
+            padding: 12px 22px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            background-image: linear-gradient(135deg, #4f46e5, #6366f1, #ec4899);
+            color: white;
+            box-shadow: 0 16px 40px rgba(79, 70, 229, 0.75);
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 20px 60px rgba(79, 70, 229, 0.95);
+        }
+
+        .btn-ghost {
+            border-radius: 999px;
+            padding: 10px 18px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--text-main);
+            font-size: 0.9rem;
+            text-decoration: none;
+        }
+
+        .btn-ghost:hover {
+            border-color: rgba(209, 213, 219, 0.95);
+        }
+
+        .hero-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* Правая часть hero — псевдо IDE */
+
+        .hero-right {
+            position: relative;
+            perspective: 1200px;
+        }
+
+        .code-panel {
+            position: relative;
+            background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.38), transparent 55%), var(--bg-elevated);
+            border-radius: var(--radius-lg);
+            padding: 16px 18px 18px;
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            box-shadow: var(--shadow-strong);
+            transform: rotateX(18deg) rotateY(-18deg);
+            transform-origin: center;
+            overflow: hidden;
+        }
+
+        .code-panel-header {
+            display: flex;
+            align-items: center;
             justify-content: space-between;
+            margin-bottom: 10px;
             font-size: 11px;
             color: var(--text-muted);
         }
-        @media (max-width: 900px) {
-            .hero { grid-template-columns: minmax(0, 1fr); }
-            .hero-card { order: -1; }
-            .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-            .split { grid-template-columns: minmax(0, 1fr); }
-            .contacts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+        .code-dots {
+            display: flex;
+            gap: 5px;
         }
-        @media (max-width: 640px) {
-            .page { padding: 12px 10px 32px; }
-            .hero-wrapper { padding: 16px 14px 18px; border-radius: 24px; }
-            .header { flex-direction: column; align-items: flex-start; }
-            .nav { font-size: 11px; }
-            .cards { grid-template-columns: minmax(0, 1fr); }
-            .contacts-grid { grid-template-columns: minmax(0, 1fr); }
-            .hero-actions { flex-direction: column; align-items: stretch; }
-            .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+
+        .code-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+        }
+
+        .code-dot.red { background: #f97373; }
+        .code-dot.yellow { background: #fde68a; }
+        .code-dot.green { background: #6ee7b7; }
+
+        .code-body {
+            font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 11px;
+            line-height: 1.6;
+            color: #e5e7eb;
+            white-space: pre;
+            overflow: hidden;
+            max-height: 260px;
+        }
+
+        .code-comment { color: #6b7280; }
+        .code-keyword { color: #60a5fa; }
+        .code-type { color: #a5b4fc; }
+        .code-string { color: #f9a8d4; }
+        .code-annot { color: #22c55e; }
+
+        .code-glow {
+            position: absolute;
+            right: -80px;
+            bottom: -80px;
+            width: 260px;
+            height: 260px;
+            background: radial-gradient(circle, rgba(129, 140, 248, 0.5), transparent 65%);
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .code-label {
+            position: absolute;
+            top: 14px;
+            right: 18px;
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(209, 213, 219, 0.85);
+        }
+
+        .code-tag {
+            position: absolute;
+            bottom: 14px;
+            left: 18px;
+            font-size: 10px;
+            padding: 4px 9px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            background: rgba(15, 23, 42, 0.92);
+            color: rgba(226, 232, 240, 0.9);
+        }
+
+        /* ==== Секция услуг ==== */
+
+        .section-title {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+
+        .section-title span {
+            color: #e5e7eb;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            gap: 22px;
+            margin-bottom: 56px;
+        }
+
+        .card {
+            position: relative;
+            border-radius: var(--radius-md);
+            background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.18), transparent 55%), var(--bg-elevated);
+            border: 1px solid var(--border-subtle);
+            padding: 18px 18px 20px;
+            overflow: hidden;
+            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.95);
+            border-color: rgba(129, 140, 248, 0.9);
+        }
+
+        .card-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .card-icon-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(129, 140, 248, 0.6), transparent 65%);
+            font-size: 0.9rem;
+        }
+
+        .card h2 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .card p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        /* новый, более визуальный layout карточек */
+
+        .card-inner {
+            display: flex;
+            align-items: flex-start;
+            gap: 18px;
+        }
+
+        .card-text {
+            flex: 1 1 auto;
+        }
+
+        .card-title-main {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+
+        .card-sub {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+
+        .card-list {
+            list-style: none;
+            font-size: 0.86rem;
+            color: rgba(209, 213, 219, 0.95);
+        }
+
+        .card-list li {
+            margin-bottom: 4px;
+            position: relative;
+            padding-left: 18px;
+        }
+
+        .card-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: #a5b4fc;
+            font-size: 0.78rem;
+        }
+
+        .card-visual {
+            flex: 0 0 120px;
+            height: 90px;
+            border-radius: 18px;
+            background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.4), transparent 60%);
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-visual-tag {
+            position: absolute;
+            top: 8px;
+            left: 10px;
+            font-size: 0.65rem;
+            padding: 3px 7px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid rgba(148, 163, 184, 0.7);
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: rgba(226, 232, 240, 0.9);
+        }
+
+        .card-visual-lines {
+            position: absolute;
+            left: 10px;
+            right: 10px;
+            bottom: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .card-line {
+            height: 4px;
+            border-radius: 999px;
+            background: linear-gradient(90deg, rgba(148, 163, 184, .8), transparent);
+        }
+
+        .card-line:nth-child(2) {
+            width: 70%;
+            background: linear-gradient(90deg, rgba(96, 165, 250, .9), transparent);
+        }
+
+        .card-line:nth-child(3) {
+            width: 50%;
+            background: linear-gradient(90deg, rgba(244, 114, 182, .9), transparent);
+        }
+
+        /* ==== Нам доверяют ==== */
+
+        .trust {
+            margin-bottom: 56px;
+        }
+
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 18px;
+        }
+
+        .trust-card {
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(148, 163, 184, 0.55);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.94));
+            padding: 16px 16px 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            align-items: flex-start;
+        }
+
+        .trust-image {
+            width: 100%;
+            height: 120px;
+            border-radius: 12px;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 16px;
+            margin-bottom: 12px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .trust-image svg {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .trust-label {
+            font-size: 0.74rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .trust-name {
+            font-size: 1.02rem;
+            font-weight: 600;
+        }
+
+        .trust-note {
+            font-size: 0.84rem;
+            color: var(--text-muted);
+        }
+
+        /* ==== Контакты ==== */
+
+        .contact-section {
+            padding: 24px 22px 26px;
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(148, 163, 184, 0.6);
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
+            box-shadow: var(--shadow-strong);
+            margin-bottom: 26px;
+        }
+
+        .contact-headline {
+            font-size: 1.24rem;
+            margin-bottom: 6px;
+        }
+
+        .contact-subline {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 18px;
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 18px;
+        }
+
+        .contact-item {
+            font-size: 0.92rem;
+        }
+
+        .contact-label {
+            font-size: 0.74rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .contact-value a {
+            color: var(--text-main);
+            text-decoration: none;
+        }
+
+        .contact-value a:hover {
+            text-decoration: underline;
+        }
+
+        footer {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        footer a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* ==== Адаптивность ==== */
+
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .hero-right {
+                order: -1;
+            }
+
+            .code-panel {
+                transform: none;
+            }
+
+            .topbar {
+                padding-inline: 18px;
+            }
+
+            .topbar-inner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .card-inner {
+                flex-direction: column;
+            }
+
+            .card-visual {
+                width: 100%;
+                max-width: 260px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .contact-section {
+                padding-inline: 16px;
+            }
         }
     </style>
 </head>
 <body>
-<div class="page">
-    <div class="hero-wrapper" id="top">
-        <div class="hero-wave"></div>
+<div class="bg-layer">
+    <div class="bg-grid"></div>
+    <div class="bg-gradient-orb bg-orb-1"></div>
+    <div class="bg-gradient-orb bg-orb-2"></div>
+    <div class="bg-gradient-orb bg-orb-3"></div>
+</div>
 
-        <header class="header">
-            <div class="logo">
-                <div class="logo-mark"><span>J</span></div>
-                <div>
-                    <div class="logo-text-main">JavaVIT</div>
-                    <div class="logo-text-sub">Java · Backend · Bots</div>
-                </div>
+<div class="bg-layer" id="particles"></div>
+
+<div class="topbar">
+    <div class="topbar-inner">
+        <div class="logo">
+            <div class="logo-mark">J</div>
+            <div class="logo-title">
+                <div class="logo-title-main">JavaVIT</div>
+                <div class="logo-title-sub">Разработка на Java · Боты · Data/AI</div>
             </div>
-            <nav class="nav">
-                <a href="#about">О компании</a>
-                <a href="#services">Услуги</a>
-                <a href="#bots">Telegram-боты</a>
-                <a href="#courses">Курсы</a>
-                <a href="#resume">Резюме</a>
-                <a href="#contacts">Контакты</a>
-            </nav>
-        </header>
+        </div>
+        <nav class="nav">
+            <a href="#services">Услуги</a>
+            <a href="#trust">Нам доверяют</a>
+            <a href="#contacts">Контакты</a>
+            <a href="resume.html" class="nav-cta">Резюме</a>
+        </nav>
+    </div>
+</div>
 
-        <div class="hero">
-            <div>
-                <div class="hero-label">
-                    <div class="hero-label-dot"></div>
-                    <span>Разработка на Java под ваши задачи</span>
-                </div>
-                <h1 class="hero-title">
-                    <span class="gradient">JavaVIT</span> — разработка backend-систем
-                    и <span class="gradient">Telegram-ботов</span>
-                </h1>
-                <p class="hero-subtitle">
-                    Помогаю компаниям и предпринимателям запускать надёжные сервисы на Java:
-                    от продуманных backend-систем до Telegram-ботов с оплатами, интеграциями и аналитикой.
-                </p>
-                <div class="hero-badges">
-                    <div class="badge">Java · Spring Boot</div>
-                    <div class="badge">PostgreSQL · Kafka · REST</div>
-                    <div class="badge">Telegram Bot API · платежи</div>
-                </div>
-                <div class="hero-actions">
-                    <a href="https://t.me/javavit_ru" class="btn-primary">
-                        <span class="btn-icon">💬</span>
-                        <span>Написать в Telegram</span>
-                    </a>
-                    <a href="resume.html" class="btn-ghost">
-                        <span class="btn-icon">📄</span>
-                        <span>Посмотреть резюме</span>
-                    </a>
-                </div>
-                <div class="hero-note">
-                    Основной контакт: @javavit_ru • личный: @karen_ahper
-                </div>
+<main class="shell">
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-left">
+            <div class="hero-kicker">
+                <div class="hero-dot"></div>
+                <span>Java-разработка на заказ · от идеи до продакшена</span>
             </div>
+            <h1 class="hero-title">
+                JavaVIT —<br>
+                <span>разработка на заказ</span>
+            </h1>
+            <p class="hero-text">
+                Делаем под ключ веб-приложения, backend-сервисы, Telegram-ботов и решения с Data/AI.
+                Современный стек, продуманная архитектура и фокус на том, чтобы продукт реально работал
+                в вашем бизнесе — а не только в презентациях.
+            </p>
+            <div class="hero-tags">
+                <div class="chip">Java · Spring Boot · PostgreSQL</div>
+                <div class="chip">Telegram-боты</div>
+                <div class="chip">44-ФЗ · 223-ФЗ</div>
+                <div class="chip">Data/AI</div>
+            </div>
+            <div class="hero-actions">
+                <a class="btn-primary" href="https://t.me/javavit_ru" target="_blank" rel="noreferrer">
+                    Обсудить задачу в Telegram
+                </a>
+                <a class="btn-ghost" href="resume.html" target="_blank" rel="noreferrer">
+                    Посмотреть резюме
+                </a>
+            </div>
+            <div class="hero-note">
+                От проектов для НЛМК и РЖД до автоматизации продавцов на маркетплейсах.
+            </div>
+        </div>
 
-            <aside class="hero-card">
-                <div class="hero-card-header">
-                    <div class="hero-card-title">Чем я могу быть полезен</div>
-                    <div>Java · Spring · Telegram</div>
+        <div class="hero-right">
+            <div class="code-panel" id="codePanel">
+                <div class="code-panel-header">
+                    <div class="code-dots">
+                        <div class="code-dot red"></div>
+                        <div class="code-dot yellow"></div>
+                        <div class="code-dot green"></div>
+                    </div>
+                    <div>Service.java</div>
                 </div>
-                <div class="hero-card-body">
-                    <ul class="hero-list">
-                        <li>Архитектура и разработка backend-сервисов</li>
-                        <li>Интеграции: платежи, CRM, внешние API</li>
-                        <li>Telegram-боты с оплатой и личным кабинетом</li>
-                        <li>Аналитика данных и рекомендательные механики</li>
-                    </ul>
-                    <div class="hero-tag-grid">
-                        <div class="hero-tag"><span>Stack</span><strong>Java · Spring</strong></div>
-                        <div class="hero-tag"><span>DB</span><strong>PostgreSQL</strong></div>
-                        <div class="hero-tag"><span>Bots</span><strong>Telegram</strong></div>
-                        <div class="hero-tag"><span>Ops</span><strong>Docker · CI/CD</strong></div>
+                <div class="code-label">JAVA · BACKEND · BOTS</div>
+                <div class="code-body">
+<span class="code-comment">// JavaVIT — минимальный пример сервиса</span>
+<span class="code-annot">@Service</span>
+<span class="code-keyword">public class</span> <span class="code-type">OrderService</span> {
+
+    <span class="code-keyword">private final</span> <span class="code-type">OrderRepository</span> repository;
+    <span class="code-keyword">private final</span> <span class="code-type">NotificationClient</span> notify;
+
+    <span class="code-keyword">public</span> OrderService(
+            OrderRepository repository,
+            NotificationClient notify) {
+        <span class="code-keyword">this</span>.repository = repository;
+        <span class="code-keyword">this</span>.notify = notify;
+    }
+
+    <span class="code-annot">@Transactional</span>
+    <span class="code-keyword">public</span> <span class="code-type">Order</span> create(<span class="code-type">OrderRequest</span> request) {
+        <span class="code-comment">// 1. валидация и доменная логика</span>
+        <span class="code-type">Order</span> order = Order.from(request);
+
+        <span class="code-comment">// 2. сохранение в PostgreSQL</span>
+        order = repository.save(order);
+
+        <span class="code-comment">// 3. уведомление через Telegram-бота</span>
+        notify.send(
+            <span class="code-string">"Новый заказ "</span> + order.id()
+        );
+
+        <span class="code-keyword">return</span> order;
+    }
+}
+                </div>
+                <div class="code-tag">prod-ready, без магии конструктора</div>
+                <div class="code-glow"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- УСЛУГИ -->
+    <section id="services">
+        <div class="section-title">Услуги <span>/ что мы делаем</span></div>
+        <div class="cards-grid">
+            <!-- Веб-сервисы -->
+            <article class="card">
+                <div class="card-inner">
+                    <div class="card-text">
+                        <div class="card-badge">
+                            <div class="card-icon-dot">🧩</div>
+                            Веб-приложения под ключ
+                        </div>
+                        <h2 class="card-title-main">Современные веб-сервисы</h2>
+                        <div class="card-sub">
+                            Разрабатываем backend и сервисы под ваши процессы: от MVP до
+                            высоконагруженных систем с интеграциями и аналитикой.
+                        </div>
+                        <ul class="card-list">
+                            <li>Java, Spring Boot, PostgreSQL, Kafka</li>
+                            <li>REST API, микросервисы, авторизация, роли</li>
+                            <li>Мониторинг, логирование, SLA и поддержка</li>
+                        </ul>
+                    </div>
+                    <div class="card-visual">
+                        <div class="card-visual-tag">api · backend</div>
+                        <div class="card-visual-lines">
+                            <div class="card-line"></div>
+                            <div class="card-line"></div>
+                            <div class="card-line"></div>
+                        </div>
                     </div>
                 </div>
-            </aside>
-        </div>
-    </div>
+            </article>
 
-    <section id="about">
-        <h2 class="section-title">О JavaVIT</h2>
-        <p class="section-subtitle">
-            JavaVIT — это практический опыт в промышленной Java-разработке, архитектуре систем
-            и автоматизации бизнес-процессов. Важен не только стек, но и измеримый эффект: скорость
-            процессов, стабильность, удобство для пользователей.
-        </p>
-        <div class="pill-row">
-            <span class="pill">Микросервисы и интеграции</span>
-            <span class="pill">Highload и надёжность</span>
-            <span class="pill">Работа с данными и EDA</span>
-            <span class="pill">Автоматизация через ботов</span>
-        </div>
-    </section>
-
-    <section id="services">
-        <h2 class="section-title">Услуги</h2>
-        <p class="section-subtitle">
-            Помогу как с развитием уже существующих систем, так и с запуском новых сервисов —
-            от идеи и архитектуры до внедрения и сопровождения.
-        </p>
-        <div class="cards">
+            <!-- Тендеры -->
             <article class="card">
-                <div class="card-label">Backend</div>
-                <div class="card-title">Разработка Java-сервисов</div>
-                <div class="card-text">
-                    Надёжные backend-сервисы на Java/Spring: REST API, бизнес-логика, безопасность,
-                    работа с базами данных и сообщениями.
+                <div class="card-inner">
+                    <div class="card-text">
+                        <div class="card-badge">
+                            <div class="card-icon-dot">📑</div>
+                            Тендерная разработка
+                        </div>
+                        <h2 class="card-title-main">Проекты по 44-ФЗ / 223-ФЗ</h2>
+                        <div class="card-sub">
+                            Берём на себя техническую часть тендера: от проработки ТЗ до сдачи
+                            и сопровождения. Понимаем специфику госсектора и корпораций.
+                        </div>
+                        <ul class="card-list">
+                            <li>Выполнение требований заказчика и регламентов</li>
+                            <li>Архитектура, интеграции, отчётность, доработки</li>
+                            <li>Опыт в промышленных и ведомственных системах</li>
+                        </ul>
+                    </div>
+                    <div class="card-visual">
+                        <div class="card-visual-tag">44-ФЗ · 223-ФЗ</div>
+                        <div class="card-visual-lines">
+                            <div class="card-line"></div>
+                            <div class="card-line"></div>
+                            <div class="card-line"></div>
+                        </div>
+                    </div>
                 </div>
-                <ul class="card-list">
-                    <li>Spring Boot, Spring Cloud</li>
-                    <li>PostgreSQL, оптимизация запросов</li>
-                    <li>Docker, CI/CD, логирование и мониторинг</li>
-                </ul>
             </article>
 
+            <!-- Архитектура и Data/AI -->
             <article class="card">
-                <div class="card-label">Интеграции</div>
-                <div class="card-title">Интеграция систем</div>
-                <div class="card-text">
-                    Связь ваших сервисов между собой и с внешним миром: платёжные шлюзы,
-                    CRM, маркетплейсы, внутренние API.
-                </div>
-                <ul class="card-list">
-                    <li>Проектирование и документирование API</li>
-                    <li>Интеграция с внешними сервисами</li>
-                    <li>Очереди, Kafka, брокеры сообщений</li>
-                </ul>
-            </article>
-
-            <article class="card" id="bots">
-                <div class="card-label">Bots</div>
-                <div class="card-title">Telegram-боты под ключ</div>
-                <div class="card-text">
-                    От простых помощников до ботов с оплатой, личным кабинетом,
-                    расписанием и аналитикой в админке.
-                </div>
-                <ul class="card-list">
-                    <li>Запись по тайм-слотам</li>
-                    <li>Приём платежей и интеграция с кассами</li>
-                    <li>Отзывы, каталог, управление через админ-панель</li>
-                </ul>
-            </article>
-        </div>
-    </section>
-
-    <section id="courses">
-        <h2 class="section-title">Обучение и материалы</h2>
-        <p class="section-subtitle">
-            Собираю и систематизирую материалы по Java, backend-разработке, подготовке к собеседованиям
-            и анализу данных. Фокус на понимании, а не на зубрёжке.
-        </p>
-        <div class="split">
-            <article class="card">
-                <div class="card-label">Education</div>
-                <div class="card-title">Видео-курсы и разборы</div>
-                <div class="card-text">
-                    Конспекты, разборы задач и мини-лекции по Java, структурам данных, Spring
-                    и практическим кейсам из продакшена.
-                </div>
-                <ul class="card-list">
-                    <li>Основы и продвинутая Java</li>
-                    <li>Spring, базы данных, архитектура</li>
-                    <li>Подготовка к интервью</li>
-                </ul>
-                <div class="pill-row" style="margin-top: 10px;">
-                    <a class="pill" href="https://t.me/javavit_ru">Материалы и вопросы в Telegram →</a>
-                </div>
-            </article>
-
-            <article id="resume" class="resume-box">
-                <h3>Резюме Senior Java Developer</h3>
-                <div class="resume-line">
-                    <span>Карен Петросян</span>
-                    <span>Java · Spring · Data</span>
-                </div>
-                <div class="resume-stack">
-                    Микросервисы, интеграции, высоконагруженные системы, работа с данными
-                    и построение Telegram-ботов под бизнес-задачи.
-                </div>
-                <div class="pill-row" style="margin-top: 12px;">
-                    <a href="resume.html" class="pill">Открыть резюме в браузере</a>
-                    <!-- при желании можно добавить PDF -->
-                    <!-- <a href="Karen_Petrosyan_Resume.pdf" class="pill">Скачать резюме (PDF)</a> -->
+                <div class="card-inner">
+                    <div class="card-text">
+                        <div class="card-badge">
+                            <div class="card-icon-dot">🧠</div>
+                            Архитектура и Data/AI
+                        </div>
+                        <h2 class="card-title-main">Архитектура, данные и ИИ</h2>
+                        <div class="card-sub">
+                            Помогаем выстроить архитектуру ПО и использовать данные и нейросети:
+                            от схем интеграции до генерации контента и аналитики.
+                        </div>
+                        <ul class="card-list">
+                            <li>Архитектурные схемы, BPMN, документация</li>
+                            <li>Data/AI-модули, рекомендации, агенты</li>
+                            <li>Генерация изображений и видео: карточки маркетплейсов,
+                                преленды, видео-поздравления</li>
+                        </ul>
+                    </div>
+                    <div class="card-visual">
+                        <div class="card-visual-tag">data · ai</div>
+                        <div class="card-visual-lines">
+                            <div class="card-line"></div>
+                            <div class="card-line"></div>
+                            <div class="card-line"></div>
+                        </div>
+                    </div>
                 </div>
             </article>
         </div>
     </section>
 
-    <section id="contacts">
-        <h2 class="section-title">Контакты</h2>
-        <p class="section-subtitle">
-            Напишите, если вам нужен backend на Java, Telegram-бот или помощь с архитектурой и данными.
-        </p>
-        <div class="contacts-grid">
+    <!-- НАМ ДОВЕРЯЮТ -->
+    <section id="trust" class="trust">
+        <div class="section-title">Нам доверяют <span>/ опыт в доменах</span></div>
+        <div class="trust-grid">
+            <div class="trust-card">
+                <div class="trust-image">
+                    <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="200" height="60" rx="4" fill="#1e3a8a" opacity="0.1"/>
+                        <text x="100" y="35" font-family="system-ui, sans-serif" font-size="32" font-weight="700" fill="#3b82f6" text-anchor="middle" letter-spacing="2">НЛМК</text>
+                        <rect x="20" y="45" width="160" height="3" rx="1.5" fill="#3b82f6" opacity="0.6"/>
+                    </svg>
+                </div>
+                <div class="trust-label">Металлургия</div>
+                <div class="trust-name">НЛМК</div>
+                <div class="trust-note">
+                    Сервисы сквозного слежения и обработки металлопродукции:
+                    учёт агрегатов, смен и логистики.
+                </div>
+            </div>
+            <div class="trust-card">
+                <div class="trust-image">
+                    <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="200" height="60" rx="4" fill="#dc2626" opacity="0.1"/>
+                        <circle cx="50" cy="30" r="18" fill="none" stroke="#dc2626" stroke-width="3"/>
+                        <rect x="35" y="15" width="30" height="30" rx="2" fill="none" stroke="#dc2626" stroke-width="2.5"/>
+                        <text x="100" y="38" font-family="system-ui, sans-serif" font-size="28" font-weight="700" fill="#dc2626" text-anchor="middle" letter-spacing="4">РЖД</text>
+                    </svg>
+                </div>
+                <div class="trust-label">Транспорт</div>
+                <div class="trust-name">РЖД</div>
+                <div class="trust-note">
+                    Распределённый электронный документооборот, интеграции,
+                    масштабируемая микросервисная архитектура.
+                </div>
+            </div>
+            <div class="trust-card">
+                <div class="trust-image">
+                    <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="200" height="60" rx="4" fill="#1e40af" opacity="0.1"/>
+                        <rect x="30" y="15" width="140" height="30" rx="3" fill="#1e40af" opacity="0.2"/>
+                        <text x="100" y="40" font-family="system-ui, sans-serif" font-size="36" font-weight="900" fill="#1e40af" text-anchor="middle" letter-spacing="1">IKEA</text>
+                        <rect x="30" y="48" width="140" height="4" rx="2" fill="#fbbf24"/>
+                    </svg>
+                </div>
+                <div class="trust-label">Ритейл</div>
+                <div class="trust-name">IKEA</div>
+                <div class="trust-note">
+                    Опыт в домене розничной торговли, клиентских сервисов
+                    и внутренних процессов.
+                </div>
+            </div>
+            <div class="trust-card">
+                <div class="trust-image">
+                    <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="0" y="0" width="200" height="60" rx="4" fill="#005bff" opacity="0.1"/>
+                        <circle cx="40" cy="30" r="20" fill="#005bff" opacity="0.2"/>
+                        <circle cx="40" cy="30" r="12" fill="none" stroke="#005bff" stroke-width="2"/>
+                        <text x="100" y="38" font-family="system-ui, sans-serif" font-size="32" font-weight="700" fill="#005bff" text-anchor="middle" letter-spacing="2">OZON</text>
+                        <rect x="85" y="45" width="30" height="3" rx="1.5" fill="#ff6600"/>
+                    </svg>
+                </div>
+                <div class="trust-label">Маркетплейсы</div>
+                <div class="trust-name">OZON</div>
+                <div class="trust-note">
+                    Аналитика, оптимизация карточек, автоматизация задач продавцов
+                    и генерация контента с ИИ.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- КОНТАКТЫ -->
+    <section id="contacts" class="contact-section">
+        <div class="contact-headline">Давайте обсудим ваш проект</div>
+        <div class="contact-subline">
+            Коротко расскажите о задаче — мы предложим вариант решения, стек и ориентировочные сроки.
+            Можно начать с простого сообщения в Telegram.
+        </div>
+        <div class="contact-grid">
             <div class="contact-item">
                 <div class="contact-label">Telegram</div>
                 <div class="contact-value">
-                    <a href="https://t.me/javavit_ru">@javavit_ru</a><br/>
-                    <span style="font-size:12px;opacity:.7;">личный: <a href="https://t.me/karen_ahper">@karen_ahper</a></span>
+                    <a href="https://t.me/javavit_ru" target="_blank">@javavit_ru</a><br>
+                    <span style="font-size:0.85rem;opacity:0.8;">
+                        личный: <a href="https://t.me/karen_ahper" target="_blank">@karen_ahper</a>
+                    </span>
                 </div>
             </div>
             <div class="contact-item">
                 <div class="contact-label">Email</div>
-                <div class="contact-value"><a href="mailto:info@javavit.ru">info@javavit.ru</a></div>
+                <div class="contact-value">
+                    <a href="mailto:info@javavit.ru">info@javavit.ru</a>
+                </div>
             </div>
             <div class="contact-item">
                 <div class="contact-label">GitHub</div>
                 <div class="contact-value">
-                    <a href="https://github.com/Pekar7" target="_blank" rel="noreferrer">github.com/Pekar7</a>
+                    <a href="https://github.com/Pekar7" target="_blank">github.com/Pekar7</a>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-label">Резюме</div>
+                <div class="contact-value">
+                    <a href="resume.html" target="_blank">Senior Java Developer — резюме</a>
                 </div>
             </div>
         </div>
     </section>
 
     <footer>
-        <div>© <span id="year"></span> JavaVIT — разработка на Java и Telegram-боты.</div>
-        <div><a href="#top">Наверх ↑</a></div>
+        © <span id="year"></span> JavaVIT — разработка на заказ. Сделано с любовью к Java и аккуратной архитектуре.
     </footer>
-</div>
+</main>
 
 <script>
+    // Год в футере
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Частицы на фоне
+    (function createParticles() {
+        const layer = document.getElementById('particles');
+        const count = 60;
+        for (let i = 0; i < count; i++) {
+            const dot = document.createElement('div');
+            dot.style.position = 'absolute';
+            dot.style.width = '3px';
+            dot.style.height = '3px';
+            dot.style.borderRadius = '999px';
+            dot.style.background = 'rgba(129,140,248,0.6)';
+            dot.style.left = Math.random() * 100 + '%';
+            dot.style.top = Math.random() * 100 + '%';
+            const duration = 10 + Math.random() * 14;
+            const delay = Math.random() * 14;
+            dot.style.opacity = '0';
+            dot.style.animation = `particleFloat ${duration}s ${delay}s linear infinite`;
+            layer.appendChild(dot);
+        }
+    })();
+
+    // Лёгкий параллакс для code-панели
+    const panel = document.getElementById('codePanel');
+    if (panel) {
+        panel.addEventListener('mousemove', (e) => {
+            const rect = panel.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            panel.style.transform =
+                `rotateX(${18 - y * 6}deg) rotateY(${-18 + x * 6}deg)`;
+        });
+        panel.addEventListener('mouseleave', () => {
+            panel.style.transform = 'rotateX(18deg) rotateY(-18deg)';
+        });
+    }
+
+    // Анимация для частиц
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes particleFloat {
+            0% { transform: translateY(40px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-40px); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
 </script>
 </body>
 </html>
