@@ -609,7 +609,8 @@
             display: flex;
             flex-direction: column;
             gap: 6px;
-            align-items: flex-start;
+            align-items: center;
+            text-align: center;
         }
 
         .trust-image {
@@ -635,16 +636,74 @@
             letter-spacing: 0.18em;
             text-transform: uppercase;
             color: var(--text-muted);
+            text-align: center;
+            width: 100%;
         }
 
         .trust-name {
-            font-size: 1.02rem;
-            font-weight: 600;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 0.05em;
+            margin: 8px 0;
+            text-transform: uppercase;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .trust-name::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            bottom: -4px;
+            transform: translateX(-50%) scaleX(0);
+            width: 0;
+            height: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .trust-name:hover::after {
+            transform: translateX(-50%) scaleX(1);
+            width: 100%;
+        }
+
+        .trust-name.nlmk {
+            color: rgba(96, 165, 250, 0.85);
+        }
+
+        .trust-name.nlmk::after {
+            background: linear-gradient(to right, transparent, #60a5fa, transparent);
+        }
+
+        .trust-name.rzd {
+            color: rgba(239, 68, 68, 0.85);
+        }
+
+        .trust-name.rzd::after {
+            background: linear-gradient(to right, transparent, #ef4444, transparent);
+        }
+
+        .trust-name.ikea {
+            color: rgba(234, 179, 8, 0.85);
+        }
+
+        .trust-name.ikea::after {
+            background: linear-gradient(to right, transparent, #eab308, transparent);
+        }
+
+        .trust-name.ozon {
+            color: rgba(229, 231, 235, 0.9);
+        }
+
+        .trust-name.ozon::after {
+            background: linear-gradient(to right, transparent, #e5e7eb, transparent);
         }
 
         .trust-note {
             font-size: 0.84rem;
             color: var(--text-muted);
+            text-align: center;
+            width: 100%;
         }
 
         /* ==== Контакты ==== */
@@ -971,67 +1030,35 @@
 
     <!-- НАМ ДОВЕРЯЮТ -->
     <section id="trust" class="trust">
-        <div class="section-title">Нам доверяют <span>/ опыт в доменах</span></div>
+        <div class="section-title">Нам доверяют</div>
         <div class="trust-grid">
             <div class="trust-card">
-                <div class="trust-image">
-                    <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0" y="0" width="200" height="60" rx="4" fill="#1e3a8a" opacity="0.1"/>
-                        <text x="100" y="35" font-family="system-ui, sans-serif" font-size="32" font-weight="700" fill="#3b82f6" text-anchor="middle" letter-spacing="2">НЛМК</text>
-                        <rect x="20" y="45" width="160" height="3" rx="1.5" fill="#3b82f6" opacity="0.6"/>
-                    </svg>
-                </div>
                 <div class="trust-label">Металлургия</div>
-                <div class="trust-name">НЛМК</div>
+                <div class="trust-name nlmk">НЛМК</div>
                 <div class="trust-note">
                     Сервисы сквозного слежения и обработки металлопродукции:
                     учёт агрегатов, смен и логистики.
                 </div>
             </div>
             <div class="trust-card">
-                <div class="trust-image">
-                    <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0" y="0" width="200" height="60" rx="4" fill="#dc2626" opacity="0.1"/>
-                        <circle cx="50" cy="30" r="18" fill="none" stroke="#dc2626" stroke-width="3"/>
-                        <rect x="35" y="15" width="30" height="30" rx="2" fill="none" stroke="#dc2626" stroke-width="2.5"/>
-                        <text x="100" y="38" font-family="system-ui, sans-serif" font-size="28" font-weight="700" fill="#dc2626" text-anchor="middle" letter-spacing="4">РЖД</text>
-                    </svg>
-                </div>
                 <div class="trust-label">Транспорт</div>
-                <div class="trust-name">РЖД</div>
+                <div class="trust-name rzd">РЖД</div>
                 <div class="trust-note">
                     Распределённый электронный документооборот, интеграции,
                     масштабируемая микросервисная архитектура.
                 </div>
             </div>
             <div class="trust-card">
-                <div class="trust-image">
-                    <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0" y="0" width="200" height="60" rx="4" fill="#1e40af" opacity="0.1"/>
-                        <rect x="30" y="15" width="140" height="30" rx="3" fill="#1e40af" opacity="0.2"/>
-                        <text x="100" y="40" font-family="system-ui, sans-serif" font-size="36" font-weight="900" fill="#1e40af" text-anchor="middle" letter-spacing="1">IKEA</text>
-                        <rect x="30" y="48" width="140" height="4" rx="2" fill="#fbbf24"/>
-                    </svg>
-                </div>
                 <div class="trust-label">Ритейл</div>
-                <div class="trust-name">IKEA</div>
+                <div class="trust-name ikea">IKEA</div>
                 <div class="trust-note">
                     Опыт в домене розничной торговли, клиентских сервисов
                     и внутренних процессов.
                 </div>
             </div>
             <div class="trust-card">
-                <div class="trust-image">
-                    <svg viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="0" y="0" width="200" height="60" rx="4" fill="#005bff" opacity="0.1"/>
-                        <circle cx="40" cy="30" r="20" fill="#005bff" opacity="0.2"/>
-                        <circle cx="40" cy="30" r="12" fill="none" stroke="#005bff" stroke-width="2"/>
-                        <text x="100" y="38" font-family="system-ui, sans-serif" font-size="32" font-weight="700" fill="#005bff" text-anchor="middle" letter-spacing="2">OZON</text>
-                        <rect x="85" y="45" width="30" height="3" rx="1.5" fill="#ff6600"/>
-                    </svg>
-                </div>
                 <div class="trust-label">Маркетплейсы</div>
-                <div class="trust-name">OZON</div>
+                <div class="trust-name ozon">OZON</div>
                 <div class="trust-note">
                     Аналитика, оптимизация карточек, автоматизация задач продавцов
                     и генерация контента с ИИ.
