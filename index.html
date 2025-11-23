@@ -21,7 +21,8 @@
             --accent-soft: rgba(99, 102, 241, 0.3);
             --accent-2: #ec4899;
             --accent-3: #22c55e;
-            --glow: rgba(129, 140, 248, 0.9);
+            --accent-4: #0ea5e9;
+            --glow: rgba(129, 140, 248, 0.95);
             --radius-lg: 24px;
             --radius-md: 18px;
             --shadow-strong: 0 32px 120px rgba(15, 23, 42, 0.9);
@@ -52,19 +53,19 @@
             background-image:
                 linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
                 linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-            background-size: 70px 70px;
+            background-size: 80px 80px;
             opacity: 0.3;
-            transform: perspective(800px) rotateX(60deg) translateY(-30%);
+            transform: perspective(900px) rotateX(60deg) translateY(-30%);
             transform-origin: top;
         }
 
         .bg-gradient-orb {
             position: absolute;
             border-radius: 999px;
-            filter: blur(70px);
+            filter: blur(80px);
             opacity: 0.45;
             mix-blend-mode: screen;
-            animation: pulseOrb 18s ease-in-out infinite alternate;
+            animation: pulseOrb 20s ease-in-out infinite alternate;
         }
 
         .bg-orb-1 {
@@ -72,54 +73,78 @@
             height: 520px;
             background: conic-gradient(from 120deg, #4f46e5, #22c55e, #06b6d4, #a855f7, #4f46e5);
             top: -210px;
-            left: -180px;
+            left: -200px;
         }
 
         .bg-orb-2 {
             width: 420px;
             height: 420px;
-            background: radial-gradient(circle, #ec4899, #a855f7, transparent 65%);
+            background: radial-gradient(circle, #ec4899, #a855f7, transparent 70%);
             bottom: -180px;
-            right: -120px;
+            right: -130px;
         }
 
         .bg-orb-3 {
-            width: 360px;
-            height: 360px;
-            background: radial-gradient(circle, #22c55e, #0ea5e9, transparent 65%);
+            width: 380px;
+            height: 380px;
+            background: radial-gradient(circle, #22c55e, transparent 65%);
             top: 45%;
-            right: 10%;
+            left: 60%;
         }
 
         @keyframes pulseOrb {
-            0% { transform: translate3d(0, 0, 0) scale(1); }
-            50% { transform: translate3d(40px, -20px, 0) scale(1.05); }
-            100% { transform: translate3d(-30px, 25px, 0) scale(0.97); }
+            0% {
+                transform: translate3d(0, 0, 0) scale(1);
+            }
+            50% {
+                transform: translate3d(20px, -10px, 0) scale(1.08);
+            }
+            100% {
+                transform: translate3d(-25px, 15px, 0) scale(0.96);
+            }
         }
 
-        /* ==== Контейнер + навбар ==== */
+        /* Слой с «звёздной пылью» */
 
-        .shell {
-            max-width: 1180px;
-            margin: 0 auto;
-            padding: 32px 20px 64px;
-            position: relative;
-            z-index: 1;
+        #particles {
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
         }
+
+        @keyframes particleFloat {
+            0% {
+                transform: translateY(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-80px);
+                opacity: 0;
+            }
+        }
+
+        /* ==== Шапка ==== */
 
         .topbar {
             position: sticky;
             top: 0;
-            z-index: 10;
-            backdrop-filter: blur(16px);
-            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.92), transparent);
-            margin: -32px -20px 24px;
-            padding: 18px 32px 8px;
+            z-index: 20;
+            backdrop-filter: blur(18px);
+            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.94), rgba(2, 6, 23, 0.85), transparent);
+            border-bottom: 1px solid rgba(148, 163, 184, 0.18);
         }
 
         .topbar-inner {
-            max-width: 1180px;
+            max-width: 1120px;
             margin: 0 auto;
+            padding: 14px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -133,36 +158,27 @@
         }
 
         .logo-mark {
-            width: 32px;
-            height: 32px;
-            border-radius: 12px;
-            background: conic-gradient(from 150deg, #22c55e, #06b6d4, #6366f1, #a855f7, #ec4899, #22c55e);
-            box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9), 0 0 26px rgba(129, 140, 248, 0.9);
+            width: 34px;
+            height: 34px;
+            border-radius: 999px;
+            background: radial-gradient(circle at 30% 10%, #e5e7eb, #4f46e5);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #020617;
-            font-weight: 800;
+            font-weight: 700;
             font-size: 18px;
-        }
-
-        .logo-title {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+            color: #020617;
+            box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3), 0 18px 40px rgba(15, 23, 42, 0.9);
         }
 
         .logo-title-main {
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.03em;
+            font-size: 1.02rem;
         }
 
         .logo-title-sub {
-            font-size: 11px;
-            letter-spacing: 0.16em;
-            text-transform: uppercase;
+            font-size: 0.78rem;
             color: var(--text-muted);
         }
 
@@ -170,28 +186,29 @@
             display: flex;
             align-items: center;
             gap: 18px;
-            font-size: 12px;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: rgba(209, 213, 219, 0.9);
+            font-size: 0.9rem;
         }
 
         .nav a {
-            position: relative;
+            color: var(--text-muted);
             text-decoration: none;
-            color: inherit;
-            padding-bottom: 3px;
+            position: relative;
+            padding-block: 4px;
         }
 
         .nav a::after {
             content: "";
             position: absolute;
             left: 0;
-            bottom: 0;
+            bottom: -2px;
             width: 0;
             height: 1px;
             background: linear-gradient(to right, var(--accent), var(--accent-2));
-            transition: width 0.2s ease-out;
+            transition: width 0.25s;
+        }
+
+        .nav a:hover {
+            color: var(--text-main);
         }
 
         .nav a:hover::after {
@@ -199,65 +216,69 @@
         }
 
         .nav-cta {
-            padding: 6px 10px;
+            padding: 7px 14px;
             border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.6);
-            background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.4), transparent 55%);
-            text-decoration: none;
-            color: var(--text-main);
-            font-size: 11px;
+            border: 1px solid rgba(129, 140, 248, 0.7);
+            color: #e5e7eb;
+            background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.25), transparent);
         }
 
-        /* ==== Hero: два столбца ==== */
+        .nav-cta:hover {
+            background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.5), transparent);
+        }
+
+        /* ==== Основная обёртка ==== */
+
+        .shell {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 40px 20px 64px;
+            display: flex;
+            flex-direction: column;
+            gap: 80px;
+        }
+
+        /* ==== HERO ==== */
 
         .hero {
             display: grid;
-            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
             gap: 40px;
             align-items: center;
-            margin-top: 32px;
-            margin-bottom: 56px;
-        }
-
-        .hero-left {
-            position: relative;
         }
 
         .hero-kicker {
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--accent-4);
+            margin-bottom: 14px;
+            background: rgba(15, 23, 42, 0.9);
             padding: 6px 10px;
             border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            background: rgba(15, 23, 42, 0.9);
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-bottom: 14px;
+            border: 1px solid rgba(148, 163, 184, 0.3);
         }
 
         .hero-dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 999px;
-            background: radial-gradient(circle, #22c55e 0, #22c55e 50%, transparent 80%);
-            box-shadow: 0 0 16px rgba(34, 197, 94, 0.9);
+            background: radial-gradient(circle, #22c55e, #16a34a);
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
         }
 
         .hero-title {
-            font-size: clamp(2.6rem, 5vw, 3.8rem);
-            font-weight: 800;
-            letter-spacing: -0.04em;
-            line-height: 1.03;
-            margin-bottom: 16px;
-            background: linear-gradient(135deg, #e5e7eb 0%, #a5b4fc 40%, #f9a8d4 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            font-size: clamp(2.4rem, 4vw, 3.2rem);
+            line-height: 1.1;
+            margin-bottom: 18px;
+            font-weight: 700;
         }
 
         .hero-title span {
-            background: linear-gradient(135deg, #4f46e5, #ec4899);
+            background: linear-gradient(135deg, #a855f7, #6366f1, #22c55e);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -265,91 +286,93 @@
         .hero-text {
             font-size: 0.98rem;
             color: var(--text-muted);
+            max-width: 540px;
             line-height: 1.7;
-            max-width: 520px;
-            margin-bottom: 22px;
+            margin-bottom: 18px;
         }
 
         .hero-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            margin-bottom: 26px;
+            margin-bottom: 22px;
         }
 
         .chip {
-            font-size: 0.78rem;
             padding: 6px 10px;
             border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.5);
-            background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.4), transparent 65%);
-            color: rgba(229, 231, 235, 0.9);
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            font-size: 0.78rem;
+            color: var(--text-main);
+            background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.6));
         }
 
         .hero-actions {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
         }
 
         .btn-primary {
-            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 11px 20px;
             border-radius: 999px;
-            padding: 12px 22px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            background-image: linear-gradient(135deg, #4f46e5, #6366f1, #ec4899);
-            color: white;
-            box-shadow: 0 16px 40px rgba(79, 70, 229, 0.75);
+            background: linear-gradient(135deg, #4f46e5, #6366f1, #0ea5e9);
+            color: #e5e7eb;
             text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.55);
         }
 
         .btn-primary:hover {
+            filter: brightness(1.05);
             transform: translateY(-1px);
-            box-shadow: 0 20px 60px rgba(79, 70, 229, 0.95);
         }
 
         .btn-ghost {
-            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
             padding: 10px 18px;
+            border-radius: 999px;
             border: 1px solid rgba(148, 163, 184, 0.6);
-            background: rgba(15, 23, 42, 0.9);
             color: var(--text-main);
-            font-size: 0.9rem;
             text-decoration: none;
+            font-size: 0.88rem;
+            background: rgba(15, 23, 42, 0.6);
         }
 
         .btn-ghost:hover {
-            border-color: rgba(209, 213, 219, 0.95);
+            background: rgba(15, 23, 42, 0.9);
         }
 
         .hero-note {
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
-            margin-top: 6px;
         }
 
-        /* Правая часть hero — псевдо IDE */
+        /* Правый блок — псевдо IDE/код */
 
         .hero-right {
-            position: relative;
-            perspective: 1200px;
+            display: flex;
+            justify-content: center;
         }
 
         .code-panel {
-            position: relative;
-            background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.38), transparent 55%), var(--bg-elevated);
-            border-radius: var(--radius-lg);
-            padding: 16px 18px 18px;
-            border: 1px solid rgba(148, 163, 184, 0.7);
+            width: 100%;
+            max-width: 420px;
+            border-radius: 26px;
+            background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.05), rgba(15, 23, 42, 0.98));
+            border: 1px solid rgba(148, 163, 184, 0.45);
             box-shadow: var(--shadow-strong);
+            padding: 16px 18px 18px;
             transform: rotateX(18deg) rotateY(-18deg);
-            transform-origin: center;
-            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.25s ease-out;
         }
 
         .code-panel-header {
@@ -357,7 +380,7 @@
             align-items: center;
             justify-content: space-between;
             margin-bottom: 10px;
-            font-size: 11px;
+            font-size: 0.78rem;
             color: var(--text-muted);
         }
 
@@ -373,92 +396,91 @@
         }
 
         .code-dot.red { background: #f97373; }
-        .code-dot.yellow { background: #fde68a; }
-        .code-dot.green { background: #6ee7b7; }
+        .code-dot.yellow { background: #facc15; }
+        .code-dot.green { background: #22c55e; }
+
+        .code-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.18em;
+            color: rgba(148, 163, 184, 0.9);
+            margin-bottom: 10px;
+        }
 
         .code-body {
             font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 11px;
+            font-size: 0.74rem;
             line-height: 1.6;
-            color: #e5e7eb;
-            white-space: pre;
-            overflow: hidden;
-            max-height: 260px;
+            background: radial-gradient(circle at 0 0, rgba(37, 99, 235, 0.25), transparent 55%);
+            border-radius: 18px;
+            padding: 10px 12px;
+            border: 1px solid rgba(51, 65, 85, 0.9);
         }
 
         .code-comment { color: #6b7280; }
         .code-keyword { color: #60a5fa; }
-        .code-type { color: #a5b4fc; }
-        .code-string { color: #f9a8d4; }
-        .code-annot { color: #22c55e; }
+        .code-type { color: #fbbf24; }
+        .code-string { color: #4ade80; }
+        .code-annot { color: #f472b6; }
 
-        .code-glow {
-            position: absolute;
-            right: -80px;
-            bottom: -80px;
-            width: 260px;
-            height: 260px;
-            background: radial-gradient(circle, rgba(129, 140, 248, 0.5), transparent 65%);
-            opacity: 0.7;
-            pointer-events: none;
-        }
+        /* ==== Блок услуг (стиль 1) ==== */
 
-        .code-label {
-            position: absolute;
-            top: 14px;
-            right: 18px;
-            font-size: 10px;
-            letter-spacing: 0.18em;
-            text-transform: uppercase;
-            color: rgba(209, 213, 219, 0.85);
-        }
-
-        .code-tag {
-            position: absolute;
-            bottom: 14px;
-            left: 18px;
-            font-size: 10px;
-            padding: 4px 9px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.6);
-            background: rgba(15, 23, 42, 0.92);
-            color: rgba(226, 232, 240, 0.9);
-        }
-
-        /* ==== Секция услуг ==== */
-
-        .section-title {
-            font-size: 1.1rem;
+        .section-heading {
+            font-size: 0.86rem;
             text-transform: uppercase;
             letter-spacing: 0.18em;
+            color: var(--accent-4);
+            margin-bottom: 8px;
+        }
+
+        .section-heading span {
             color: var(--text-muted);
-            margin-bottom: 18px;
         }
 
-        .section-title span {
-            color: #e5e7eb;
+        #services {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
         }
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 22px;
-            margin-bottom: 56px;
         }
 
         .card {
+            background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            box-shadow: 0 28px 60px rgba(15, 23, 42, 0.85);
             position: relative;
-            border-radius: var(--radius-md);
-            background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.18), transparent 55%), var(--bg-elevated);
-            border: 1px solid var(--border-subtle);
-            padding: 18px 18px 20px;
             overflow: hidden;
-            transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.18), transparent 55%);
+            opacity: 0;
+            transition: opacity 0.25s;
+        }
+
+        .card-inner {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            padding: 22px 22px 20px;
+            gap: 18px;
+        }
+
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 24px 70px rgba(15, 23, 42, 0.95);
             border-color: rgba(129, 140, 248, 0.9);
         }
 
@@ -466,282 +488,196 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            font-size: 0.8rem;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            font-size: 0.76rem;
             color: var(--text-muted);
-            margin-bottom: 8px;
+            align-self: flex-start;
         }
 
         .card-icon-dot {
-            width: 22px;
-            height: 22px;
+            width: 18px;
+            height: 18px;
             border-radius: 999px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle, rgba(129, 140, 248, 0.6), transparent 65%);
-            font-size: 0.9rem;
-        }
-
-        .card h2 {
-            font-size: 1.2rem;
-            margin-bottom: 8px;
-        }
-
-        .card p {
-            font-size: 0.92rem;
-            color: var(--text-muted);
-            line-height: 1.7;
-            margin-bottom: 10px;
-        }
-
-        /* новый, более визуальный layout карточек */
-
-        .card-inner {
-            display: flex;
-            align-items: flex-start;
-            gap: 18px;
-        }
-
-        .card-text {
-            flex: 1 1 auto;
+            background: radial-gradient(circle, #22c55e, #16a34a);
         }
 
         .card-title-main {
-            font-size: 1.2rem;
-            margin-bottom: 6px;
+            font-size: 1.05rem;
+            margin-bottom: 4px;
         }
 
         .card-sub {
-            font-size: 0.9rem;
+            font-size: 0.88rem;
             color: var(--text-muted);
-            margin-bottom: 10px;
-            line-height: 1.6;
+            line-height: 1.7;
+            margin-bottom: 8px;
         }
 
         .card-list {
             list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
             font-size: 0.86rem;
-            color: rgba(209, 213, 219, 0.95);
-        }
-
-        .card-list li {
-            margin-bottom: 4px;
-            position: relative;
-            padding-left: 18px;
+            margin-top: 2px;
         }
 
         .card-list li::before {
-            content: "✓";
-            position: absolute;
-            left: 0;
-            top: 0;
-            color: #a5b4fc;
-            font-size: 0.78rem;
+            content: "•";
+            margin-right: 6px;
+            color: var(--accent-3);
         }
 
+        /* Правая часть карточки — «мини-картинка» */
+
         .card-visual {
-            flex: 0 0 120px;
-            height: 90px;
-            border-radius: 18px;
-            background: radial-gradient(circle at 0 0, rgba(148, 163, 184, 0.4), transparent 60%);
+            margin-top: 10px;
+            border-radius: var(--radius-md);
+            padding: 12px 12px 10px;
+            background:
+                radial-gradient(circle at 10% 0, rgba(59, 130, 246, 0.5), transparent 55%),
+                radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.4), transparent 45%),
+                linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
             border: 1px solid rgba(148, 163, 184, 0.5);
             position: relative;
             overflow: hidden;
         }
 
         .card-visual-tag {
-            position: absolute;
-            top: 8px;
-            left: 10px;
-            font-size: 0.65rem;
-            padding: 3px 7px;
-            border-radius: 999px;
-            background: rgba(15, 23, 42, 0.92);
-            border: 1px solid rgba(148, 163, 184, 0.7);
-            letter-spacing: .1em;
+            font-size: 0.68rem;
             text-transform: uppercase;
-            color: rgba(226, 232, 240, 0.9);
+            letter-spacing: 0.16em;
+            color: rgba(226, 232, 240, 0.85);
+            margin-bottom: 6px;
         }
 
         .card-visual-lines {
-            position: absolute;
-            left: 10px;
-            right: 10px;
-            bottom: 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            display: grid;
+            gap: 6px;
         }
 
         .card-line {
-            height: 4px;
+            height: 6px;
             border-radius: 999px;
-            background: linear-gradient(90deg, rgba(148, 163, 184, .8), transparent);
+            background: linear-gradient(to right, rgba(148, 163, 184, 0.25), rgba(148, 163, 184, 0.7));
         }
 
         .card-line:nth-child(2) {
-            width: 70%;
-            background: linear-gradient(90deg, rgba(96, 165, 250, .9), transparent);
+            width: 78%;
+            background: linear-gradient(to right, rgba(236, 72, 153, 0.2), rgba(236, 72, 153, 0.7));
         }
 
         .card-line:nth-child(3) {
-            width: 50%;
-            background: linear-gradient(90deg, rgba(244, 114, 182, .9), transparent);
+            width: 55%;
+            background: linear-gradient(to right, rgba(34, 197, 94, 0.25), rgba(34, 197, 94, 0.8));
         }
 
         /* ==== Нам доверяют ==== */
 
-        .trust {
-            margin-bottom: 56px;
+        #trust {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .trust-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 18px;
         }
 
         .trust-card {
             border-radius: var(--radius-md);
-            border: 1px solid rgba(148, 163, 184, 0.55);
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.94));
-            padding: 16px 16px 18px;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            align-items: center;
-            text-align: center;
-        }
-
-        .trust-image {
-            width: 100%;
-            height: 120px;
-            border-radius: 12px;
-            background: rgba(15, 23, 42, 0.6);
-            padding: 16px;
-            margin-bottom: 12px;
-            border: 1px solid rgba(148, 163, 184, 0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .trust-image svg {
-            max-width: 100%;
-            max-height: 100%;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            padding: 16px 16px 14px;
+            background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.15), rgba(15, 23, 42, 0.98));
+            font-size: 0.86rem;
         }
 
         .trust-label {
-            font-size: 0.74rem;
-            letter-spacing: 0.18em;
+            font-size: 0.72rem;
             text-transform: uppercase;
+            letter-spacing: 0.16em;
             color: var(--text-muted);
-            text-align: center;
-            width: 100%;
+            margin-bottom: 6px;
         }
 
         .trust-name {
-            font-size: 2rem;
-            font-weight: 800;
-            letter-spacing: 0.05em;
-            margin: 8px 0;
-            text-transform: uppercase;
-            text-align: center;
-            position: relative;
-            transition: all 0.3s ease;
-        }
-
-        .trust-name::after {
-            content: "";
-            position: absolute;
-            left: 50%;
-            bottom: -4px;
-            transform: translateX(-50%) scaleX(0);
-            width: 0;
-            height: 2px;
-            transition: all 0.3s ease;
-        }
-
-        .trust-name:hover::after {
-            transform: translateX(-50%) scaleX(1);
-            width: 100%;
-        }
-
-        .trust-name.nlmk {
-            color: rgba(96, 165, 250, 0.85);
-        }
-
-        .trust-name.nlmk::after {
-            background: linear-gradient(to right, transparent, #60a5fa, transparent);
-        }
-
-        .trust-name.rzd {
-            color: rgba(239, 68, 68, 0.85);
-        }
-
-        .trust-name.rzd::after {
-            background: linear-gradient(to right, transparent, #ef4444, transparent);
-        }
-
-        .trust-name.ikea {
-            color: rgba(234, 179, 8, 0.85);
-        }
-
-        .trust-name.ikea::after {
-            background: linear-gradient(to right, transparent, #eab308, transparent);
-        }
-
-        .trust-name.ozon {
-            color: rgba(229, 231, 235, 0.9);
-        }
-
-        .trust-name.ozon::after {
-            background: linear-gradient(to right, transparent, #e5e7eb, transparent);
+            font-size: 1.02rem;
+            font-weight: 600;
+            margin-bottom: 6px;
         }
 
         .trust-note {
-            font-size: 0.84rem;
+            font-size: 0.82rem;
             color: var(--text-muted);
-            text-align: center;
-            width: 100%;
+        }
+
+        .trust-name.nlmk {
+            background: linear-gradient(120deg, #22c55e, #4ade80);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .trust-name.rzd {
+            background: linear-gradient(120deg, #f97373, #fb923c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .trust-name.ikea {
+            background: linear-gradient(120deg, #38bdf8, #0ea5e9);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .trust-name.ozon {
+            background: linear-gradient(120deg, #6366f1, #a855f7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         /* ==== Контакты ==== */
 
         .contact-section {
-            padding: 24px 22px 26px;
             border-radius: var(--radius-lg);
-            border: 1px solid rgba(148, 163, 184, 0.6);
-            background: linear-gradient(135deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            padding: 26px 24px 24px;
+            background: linear-gradient(140deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
             box-shadow: var(--shadow-strong);
-            margin-bottom: 26px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
 
         .contact-headline {
-            font-size: 1.24rem;
-            margin-bottom: 6px;
+            font-size: 1.15rem;
         }
 
         .contact-subline {
             font-size: 0.9rem;
             color: var(--text-muted);
-            margin-bottom: 18px;
+            max-width: 640px;
         }
 
         .contact-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 18px;
-        }
-
-        .contact-item {
-            font-size: 0.92rem;
+            margin-top: 10px;
+            font-size: 0.86rem;
         }
 
         .contact-label {
-            font-size: 0.74rem;
-            letter-spacing: 0.18em;
+            font-size: 0.75rem;
             text-transform: uppercase;
+            letter-spacing: 0.16em;
             color: var(--text-muted);
             margin-bottom: 4px;
         }
@@ -772,6 +708,18 @@
 
         /* ==== Адаптивность ==== */
 
+        @media (max-width: 1024px) {
+            .cards-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .trust-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .contact-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
         @media (max-width: 900px) {
             .hero {
                 grid-template-columns: minmax(0, 1fr);
@@ -785,14 +733,9 @@
                 transform: none;
             }
 
-            .topbar {
-                padding-inline: 18px;
-            }
-
             .topbar-inner {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 10px;
             }
 
             .nav {
@@ -801,18 +744,19 @@
         }
 
         @media (max-width: 700px) {
-            .card-inner {
-                flex-direction: column;
+            .cards-grid {
+                grid-template-columns: minmax(0, 1fr);
             }
-
-            .card-visual {
-                width: 100%;
-                max-width: 260px;
+            .trust-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+            .contact-grid {
+                grid-template-columns: minmax(0, 1fr);
             }
         }
 
         @media (max-width: 600px) {
-            .contact-section {
+            .shell {
                 padding-inline: 16px;
             }
         }
@@ -894,51 +838,41 @@
                 </div>
                 <div class="code-label">JAVA · BACKEND · BOTS</div>
                 <div class="code-body">
-<span class="code-comment">// JavaVIT — минимальный пример сервиса</span>
-<span class="code-annot">@Service</span>
-<span class="code-keyword">public class</span> <span class="code-type">OrderService</span> {
-
-    <span class="code-keyword">private final</span> <span class="code-type">OrderRepository</span> repository;
-    <span class="code-keyword">private final</span> <span class="code-type">NotificationClient</span> notify;
-
-    <span class="code-keyword">public</span> OrderService(
-            OrderRepository repository,
-            NotificationClient notify) {
-        <span class="code-keyword">this</span>.repository = repository;
-        <span class="code-keyword">this</span>.notify = notify;
-    }
-
-    <span class="code-annot">@Transactional</span>
-    <span class="code-keyword">public</span> <span class="code-type">Order</span> create(<span class="code-type">OrderRequest</span> request) {
-        <span class="code-comment">// 1. валидация и доменная логика</span>
-        <span class="code-type">Order</span> order = Order.from(request);
-
-        <span class="code-comment">// 2. сохранение в PostgreSQL</span>
-        order = repository.save(order);
-
-        <span class="code-comment">// 3. уведомление через Telegram-бота</span>
-        notify.send(
-            <span class="code-string">"Новый заказ "</span> + order.id()
-        );
-
-        <span class="code-keyword">return</span> order;
-    }
-}
+<span class="code-comment">// JavaVIT — минимальный пример сервиса</span><br>
+<span class="code-annot">@Service</span><br>
+<span class="code-keyword">public class</span> <span class="code-type">OrderService</span> {<br><br>
+&nbsp;&nbsp;<span class="code-keyword">private final</span> <span class="code-type">OrderRepository</span> repository;<br>
+&nbsp;&nbsp;<span class="code-keyword">private final</span> <span class="code-type">NotificationClient</span> notify;<br><br>
+&nbsp;&nbsp;<span class="code-keyword">public</span> OrderService(
+        OrderRepository repository,
+        NotificationClient notify) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">this</span>.repository = repository;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">this</span>.notify = notify;<br>
+&nbsp;&nbsp;}<br><br>
+&nbsp;&nbsp;<span class="code-annot">@Transactional</span><br>
+&nbsp;&nbsp;<span class="code-keyword">public</span> <span class="code-type">Order</span> create(<span class="code-type">OrderRequest</span> request) {<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// 1. валидация и доменная логика</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-type">Order</span> order = Order.from(request);<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// 2. сохранение в PostgreSQL</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;order = repository.save(order);<br><br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// 3. уведомление через Telegram-бота</span><br>
+&nbsp;&nbsp;&nbsp;&nbsp;notify.send(<span class="code-string">"Новый заказ "</span> + order.id());<br>
+&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> order;<br>
+&nbsp;&nbsp;}<br>
+}<br>
                 </div>
-                <div class="code-tag">prod-ready, без магии конструктора</div>
-                <div class="code-glow"></div>
             </div>
         </div>
     </section>
 
     <!-- УСЛУГИ -->
     <section id="services">
-        <div class="section-title">Услуги <span>/ что мы делаем</span></div>
+        <div class="section-heading">Услуги <span>/ что мы делаем</span></div>
         <div class="cards-grid">
             <!-- Веб-сервисы -->
             <article class="card">
                 <div class="card-inner">
-                    <div class="card-text">
+                    <div>
                         <div class="card-badge">
                             <div class="card-icon-dot">🧩</div>
                             Веб-приложения под ключ
@@ -968,7 +902,7 @@
             <!-- Тендеры -->
             <article class="card">
                 <div class="card-inner">
-                    <div class="card-text">
+                    <div>
                         <div class="card-badge">
                             <div class="card-icon-dot">📑</div>
                             Тендерная разработка
@@ -998,7 +932,7 @@
             <!-- Архитектура и Data/AI -->
             <article class="card">
                 <div class="card-inner">
-                    <div class="card-text">
+                    <div>
                         <div class="card-badge">
                             <div class="card-icon-dot">🧠</div>
                             Архитектура и Data/AI
@@ -1016,7 +950,7 @@
                         </ul>
                     </div>
                     <div class="card-visual">
-                        <div class="card-visual-tag">data · ai</div>
+                        <div class="card-visual-tag">data · ai · design</div>
                         <div class="card-visual-lines">
                             <div class="card-line"></div>
                             <div class="card-line"></div>
@@ -1029,23 +963,23 @@
     </section>
 
     <!-- НАМ ДОВЕРЯЮТ -->
-    <section id="trust" class="trust">
-        <div class="section-title">Нам доверяют</div>
+    <section id="trust">
+        <div class="section-heading">Нам доверяют</div>
         <div class="trust-grid">
             <div class="trust-card">
                 <div class="trust-label">Металлургия</div>
                 <div class="trust-name nlmk">НЛМК</div>
                 <div class="trust-note">
-                    Сервисы сквозного слежения и обработки металлопродукции:
-                    учёт агрегатов, смен и логистики.
+                    Сквозной трекинг металлопродукции, интеграция с MES/WMS,
+                    мониторинг и аналитика.
                 </div>
             </div>
             <div class="trust-card">
                 <div class="trust-label">Транспорт</div>
-                <div class="trust-name rzd">РЖД</div>
+                <div class="trust-name rzd">Российские железные дороги</div>
                 <div class="trust-note">
-                    Распределённый электронный документооборот, интеграции,
-                    масштабируемая микросервисная архитектура.
+                    Распределённая EDI-платформа электронного документооборота
+                    и интеграции.
                 </div>
             </div>
             <div class="trust-card">
@@ -1117,7 +1051,7 @@
     // Частицы на фоне
     (function createParticles() {
         const layer = document.getElementById('particles');
-        const count = 60;
+        const count = 70;
         for (let i = 0; i < count; i++) {
             const dot = document.createElement('div');
             dot.style.position = 'absolute';
@@ -1127,8 +1061,8 @@
             dot.style.background = 'rgba(129,140,248,0.6)';
             dot.style.left = Math.random() * 100 + '%';
             dot.style.top = Math.random() * 100 + '%';
-            const duration = 10 + Math.random() * 14;
-            const delay = Math.random() * 14;
+            const duration = 12 + Math.random() * 16;
+            const delay = Math.random() * 16;
             dot.style.opacity = '0';
             dot.style.animation = `particleFloat ${duration}s ${delay}s linear infinite`;
             layer.appendChild(dot);
@@ -1149,18 +1083,6 @@
             panel.style.transform = 'rotateX(18deg) rotateY(-18deg)';
         });
     }
-
-    // Анимация для частиц
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes particleFloat {
-            0% { transform: translateY(40px); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-40px); opacity: 0; }
-        }
-    `;
-    document.head.appendChild(style);
 </script>
 </body>
 </html>
