@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Резюме — Карен Петросян, Senior Java Developer</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f5f5f5;
+        }
+        .page {
+            max-width: 850px;
+            margin: 32px auto;
+            padding: 48px 50px;
+            background: #ffffff;
+            box-shadow: 0 0 8px rgba(0,0,0,0.06);
+        }
+
+        h1, h2, h3 {
+            margin: 0;
+            font-weight: 600;
+        }
+        h1 {
+            font-size: 28px;
+            letter-spacing: 0.02em;
+            margin-bottom: 6px;
+        }
+        h2 {
+            font-size: 17px;
+            margin-top: 36px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .role {
+            font-size: 16px;
+            margin: 4px 0 10px 0;
+            color: #444;
+        }
+        .meta, .contact {
+            font-size: 13px;
+            color: #555;
+            line-height: 1.55;
+        }
+
+        .section {
+            margin-top: 28px;
+            font-size: 14px;
+            line-height: 1.55;
+            color: #222;
+        }
+        .section p {
+            margin-top: 10px;
+        }
+
+        .job {
+            margin-bottom: 26px;
+        }
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 16px;
+            margin-bottom: 6px;
+        }
+        .job-title {
+            font-weight: 600;
+        }
+        .job-company {
+            font-weight: 500;
+        }
+        .job-dates {
+            font-size: 13px;
+            color: #666;
+            white-space: nowrap;
+        }
+        ul {
+            padding-left: 20px;
+            margin: 8px 0 0 0;
+        }
+        li {
+            margin-bottom: 6px;
+        }
+        .keywords {
+            margin-top: 8px;
+        }
+
+        .tag-list {
+            margin-top: 12px;
+            line-height: 2.2;
+        }
+        .tag {
+            display: inline-block;
+            padding: 4px 8px;
+            margin: 4px 6px 0 0;
+            border-radius: 5px;
+            background: #f0f0f0;
+            font-size: 12px;
+        }
+
+        @media print {
+            body { background: #ffffff; }
+            .page {
+                box-shadow: none;
+                margin: 0;
+                max-width: 100%;
+                padding: 20mm 18mm;
+            }
+            a {
+                color: #000;
+                text-decoration: none;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <header>
+        <h1>Карен Петросян</h1>
+        <div class="role">Senior Java Developer</div>
+
+        <div class="meta">
+            Москва • Готов к переезду и командировкам
+        </div>
+
+        <div class="contact">
+            Тел.: +7&nbsp;(999)&nbsp;849-27-97 • Email: <a href="mailto:k1901321@gmail.com">k1901321@gmail.com</a><br />
+            Telegram: <a href="https://t.me/karen_ahper" target="_blank">@karen_ahper</a> • GitHub:
+            <a href="https://github.com/Pekar7" target="_blank">github.com/Pekar7</a>
+        </div>
+    </header>
+
+    <!-- ПРОФИЛЬ -->
+    <section class="section">
+        <h2>Профиль</h2>
+        <p>
+            Senior Java Developer с 4+ годами опыта разработки высоконагруженных распределённых систем.
+            Специализируюсь на микросервисной архитектуре, интеграции корпоративных систем
+            и оптимизации производительности backend-сервисов.
+            Работал с крупными заказчиками: НЛМК (Umbrella IT), ГВЦ Российские железные дороги, Сбер.
+        </p>
+    </section>
+
+    <!-- ОПЫТ РАБОТЫ -->
+    <section class="section">
+        <h2>Опыт работы</h2>
+
+        <!-- UMBRELLA / НЛМК -->
+        <div class="job">
+            <div class="job-header">
+                <div>
+                    <span class="job-title">Старший программист</span> —
+                    <span class="job-company">Umbrella IT (НЛМК)</span>
+                </div>
+                <div class="job-dates">Апрель 2024 — настоящее время</div>
+            </div>
+
+            <div class="keywords">
+                Сервис сквозного слежения и обработки металлопродукции.
+            </div>
+
+            <ul>
+                <li>Разработал ключевой сервис трекинга движения металла от производства до склада (Spring Boot, Kafka, Postgres).</li>
+                <li>Оптимизировал производственные операции, сократив время обработки примерно на <strong>40%</strong>.</li>
+                <li>Реализовал учёт смен, оборудования, агрегатов и атрибутов единиц продукции.</li>
+                <li>Интегрировал сервис с WMS/MES, IBM MQ, весовым оборудованием и внешними API.</li>
+                <li>Участвовал в code review, взаимодействовал с аналитиками и DevOps-командой.</li>
+                <li>Настроил мониторинг и алертинг с использованием Prometheus/Grafana.</li>
+            </ul>
+
+            <p class="keywords">
+                <strong>Результат:</strong> стабильная обработка &gt;100K операций/сутки без просадки SLA, 
+                снижение ошибок на ~60%, ускорение цепочки «производство → склад → отгрузка».
+            </p>
+        </div>
+
+        <!-- РЖД -->
+        <div class="job">
+            <div class="job-header">
+                <div>
+                    <span class="job-title">Ведущий разработчик</span> —
+                    <span class="job-company">Российские железные дороги</span>
+                </div>
+                <div class="job-dates">Январь 2022 — Апрель 2024</div>
+            </div>
+
+            <div class="keywords">
+                Распределённая EDI-система электронного документооборота.
+            </div>
+
+            <ul>
+                <li>Спроектировал и разработал микросервисную EDI-платформу с нуля.</li>
+                <li>Реализовал распределённую обработку данных (Spring Cloud, Kafka, API Gateway, Eureka).</li>
+                <li>Обеспечил масштабируемость и отказоустойчивость системы под высокими нагрузками.</li>
+                <li>Проводил code review, принимал архитектурные решения, взаимодействовал с аналитиками и DevOps.</li>
+                <li>Разработал техническую документацию и участвовал в проектировании API.</li>
+            </ul>
+
+            <p class="keywords">
+                <strong>Результат:</strong> система внедрена в 3 ключевых филиалах; сокращение времени документооборота; 
+                возможность подключения новых модулей без даунтайма.
+            </p>
+        </div>
+
+        <!-- СБЕР -->
+        <div class="job">
+            <div class="job-header">
+                <div>
+                    <span class="job-title">Java Developer</span> —
+                    <span class="job-company">Сбер</span>
+                </div>
+                <div class="job-dates">Июнь 2021 — Июнь 2022</div>
+            </div>
+
+            <div class="keywords">
+                Внутренний корпоративный сервис управления уведомлениями.
+            </div>
+
+            <ul>
+                <li>Сбор и уточнение требований совместно с бизнес-заказчиками.</li>
+                <li>Разработал REST API для формирования, отправки и управления уведомлениями.</li>
+                <li>Интегрировал сервис с внутренними банковскими модулями (OAuth2/JWT, профильные сервисы).</li>
+                <li>Участвовал в повышении надёжности и улучшении SLA сервиса.</li>
+            </ul>
+        </div>
+
+    </section>
+
+    <!-- ТЕХНОЛОГИИ -->
+    <section class="section">
+        <h2>Технологии</h2>
+        <div class="tag-list">
+            <span class="tag">Java 11–21</span>
+            <span class="tag">Spring Boot</span>
+            <span class="tag">Spring Cloud</span>
+            <span class="tag">Spring Security</span>
+            <span class="tag">Spring Data</span>
+            <span class="tag">PostgreSQL</span>
+            <span class="tag">Oracle</span>
+            <span class="tag">Liquibase</span>
+            <span class="tag">Flyway</span>
+            <span class="tag">Hibernate</span>
+            <span class="tag">ACID</span>
+            <span class="tag">Docker</span>
+            <span class="tag">Kubernetes</span>
+            <span class="tag">OpenShift</span>
+            <span class="tag">Kafka</span>
+            <span class="tag">IBM MQ</span>
+            <span class="tag">Keycloak</span>
+            <span class="tag">OAuth2/JWT</span>
+            <span class="tag">Prometheus</span>
+            <span class="tag">Grafana</span>
+            <span class="tag">ELK</span>
+            <span class="tag">Loki</span>
+            <span class="tag">GitLab CI/CD</span>
+            <span class="tag">Jenkins</span>
+            <span class="tag">Rest API</span>
+            <span class="tag">Soap</span>
+        </div>
+    </section>
+
+    <!-- ОБРАЗОВАНИЕ -->
+    <section class="section">
+        <h2>Образование</h2>
+        <p>
+            <strong>Национальный исследовательский технологический университет «МИСИС»</strong><br/>
+            Бакалавр, Прикладная математика • 2023
+        </p>
+    </section>
+
+    <!-- КУРСЫ -->
+    <section class="section">
+        <h2>Курсы</h2>
+        <ul>
+            <li>Архитектурные паттерны — ФОРС, 2024</li>
+            <li>Администрирование PostgreSQL 10 — ФОРС, 2023</li>
+            <li>Spring Boot, Spring Data — Udemy, 2023</li>
+        </ul>
+    </section>
+
+    <!-- ДОП. -->
+    <section class="section">
+        <h2>Дополнительно</h2>
+        <p>Хобби: пианино, шахматы, стрельба, настольный теннис.</p>
+    </section>
+
+</div>
+</body>
+</html>

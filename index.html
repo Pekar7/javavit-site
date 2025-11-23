@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>JavaVIT — Разработка на Java и Telegram-боты</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="JavaVIT — разработка backend-систем на Java, интеграции, Telegram-боты и обучение." />
+    <style>
+        * { box-sizing: border-box; }
+        :root {
+            --bg-main: #020617;
+            --bg-section: #020617;
+            --accent1: #1d4ed8;
+            --accent2: #22c55e;
+            --accent3: #6366f1;
+            --text-main: #e5e7eb;
+            --text-muted: #9ca3af;
+            --card-bg: rgba(15, 23, 42, 0.9);
+            --border-soft: rgba(148, 163, 184, 0.25);
+            --radius-lg: 18px;
+            --radius-xl: 24px;
+            --shadow-soft: 0 22px 45px rgba(15, 23, 42, 0.7);
+        }
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            background: radial-gradient(circle at top left, #1f2937 0, #020617 45%, #020617 100%);
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+        a { color: inherit; text-decoration: none; }
+        img { max-width: 100%; display: block; }
+        .page {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 18px 18px 48px;
+        }
+        .hero-wrapper {
+            position: relative;
+            overflow: hidden;
+            border-radius: 32px;
+            padding: 22px 22px 28px;
+            background:
+                radial-gradient(circle at 0% 0%, rgba(56, 189, 248, 0.22), transparent 55%),
+                radial-gradient(circle at 100% 0%, rgba(129, 140, 248, 0.22), transparent 55%),
+                radial-gradient(circle at 50% 120%, rgba(34, 197, 94, 0.25), transparent 55%),
+                linear-gradient(135deg, #020617 0%, #020617 28%, #020617 100%);
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            box-shadow: var(--shadow-soft);
+        }
+        .hero-wave { position: absolute; inset: 0; pointer-events: none; opacity: 0.35; }
+        .hero-wave::before {
+            content: "";
+            position: absolute;
+            inset: -40% -10%;
+            background:
+                radial-gradient(circle at 0% 40%, rgba(59, 130, 246, 0.25), transparent 55%),
+                radial-gradient(circle at 80% 10%, rgba(236, 72, 153, 0.25), transparent 55%),
+                radial-gradient(circle at 60% 100%, rgba(45, 212, 191, 0.25), transparent 55%);
+            mix-blend-mode: screen;
+            transform: skewY(-6deg);
+        }
+        .header {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        .logo { display: flex; align-items: center; gap: 10px; }
+        .logo-mark {
+            width: 34px; height: 34px;
+            border-radius: 12px;
+            background: conic-gradient(
+                from 160deg,
+                #22c55e,#22c55e,#22c55e,#1d4ed8,#6366f1,#e11d48,#22c55e
+            );
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.9);
+        }
+        .logo-mark span { font-size: 18px; font-weight: 800; color: #020617; }
+        .logo-text-main {
+            font-size: 22px; font-weight: 700;
+            letter-spacing: 0.06em; text-transform: uppercase;
+        }
+        .logo-text-sub {
+            font-size: 11px; text-transform: uppercase;
+            letter-spacing: 0.14em; color: var(--text-muted);
+        }
+        .nav {
+            display: flex; flex-wrap: wrap;
+            gap: 8px 18px;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            color: var(--text-muted);
+        }
+        .nav a {
+            position: relative;
+            padding-bottom: 4px;
+            cursor: pointer;
+        }
+        .nav a::after {
+            content: "";
+            position: absolute;
+            left: 0; bottom: 0;
+            width: 0; height: 1px;
+            background: linear-gradient(90deg, var(--accent1), var(--accent2));
+            transition: width 0.2s ease-out;
+        }
+        .nav a:hover::after { width: 100%; }
+        .hero {
+            position: relative; z-index: 2;
+            display: grid;
+            grid-template-columns: minmax(0, 3fr) minmax(0, 2.2fr);
+            gap: 32px; align-items: center;
+        }
+        .hero-label {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 4px 10px; border-radius: 999px;
+            background: rgba(15, 23, 42, 0.86);
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            font-size: 11px; color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+        .hero-label-dot {
+            width: 8px; height: 8px; border-radius: 999px;
+            background: radial-gradient(circle,#4ade80 0,#22c55e 60%,#16a34a 100%);
+            box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+        }
+        .hero-title {
+            font-size: clamp(28px, 4vw, 36px);
+            line-height: 1.1;
+            margin: 0 0 10px;
+        }
+        .hero-title span.gradient {
+            background: linear-gradient(90deg,#22c55e,#2dd4bf,#60a5fa);
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .hero-subtitle {
+            font-size: 15px; line-height: 1.6;
+            color: var(--text-muted);
+            max-width: 520px;
+            margin-bottom: 20px;
+        }
+        .hero-badges {
+            display: flex; flex-wrap: wrap;
+            gap: 8px; margin-bottom: 22px;
+        }
+        .badge {
+            padding: 4px 10px; border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            font-size: 11px; color: var(--text-muted);
+            background: rgba(15, 23, 42, 0.86);
+        }
+        .hero-actions {
+            display: flex; flex-wrap: wrap;
+            gap: 10px; align-items: center;
+        }
+        .btn-primary, .btn-ghost {
+            display: inline-flex; align-items: center; justify-content: center;
+            gap: 8px;
+            padding: 9px 16px;
+            border-radius: 999px;
+            border: 1px solid transparent;
+            font-size: 13px; font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.12s ease-out, box-shadow 0.12s ease-out,
+                        background 0.2s ease-out, border-color 0.2s ease-out;
+            white-space: nowrap;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg,#22c55e,#14b8a6,#3b82f6);
+            box-shadow: 0 14px 30px rgba(56, 189, 248, 0.3);
+            color: #020617;
+        }
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 18px 34px rgba(59, 130, 246, 0.35);
+        }
+        .btn-ghost {
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(148, 163, 184, 0.5);
+            color: var(--text-main);
+        }
+        .btn-ghost:hover {
+            background: rgba(15, 23, 42, 0.96);
+            border-color: rgba(148, 163, 184, 0.9);
+            transform: translateY(-1px);
+        }
+        .btn-icon { font-size: 14px; opacity: 0.9; }
+        .hero-note {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+        .hero-card {
+            position: relative;
+            border-radius: var(--radius-xl);
+            background:
+                radial-gradient(circle at top, rgba(37, 99, 235, 0.35), transparent 55%),
+                radial-gradient(circle at bottom, rgba(16, 185, 129, 0.3), transparent 55%),
+                #020617;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            padding: 16px 16px 18px;
+            overflow: hidden;
+        }
+        .hero-card-header {
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 10px; margin-bottom: 12px;
+            font-size: 11px; color: var(--text-muted);
+        }
+        .hero-card-title { font-size: 13px; font-weight: 500; color: var(--text-main); }
+        .hero-card-body {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 14px; align-items: flex-start;
+        }
+        .hero-list {
+            font-size: 12px;
+            color: var(--text-muted);
+            padding-left: 16px;
+            margin: 0;
+        }
+        .hero-list li { margin-bottom: 5px; }
+        .hero-tag-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 6px;
+            font-size: 11px;
+        }
+        .hero-tag {
+            border-radius: 999px;
+            padding: 5px 8px;
+            background: rgba(15, 23, 42, 0.96);
+            border: 1px solid rgba(148, 163, 184, 0.45);
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .hero-tag span { opacity: 0.8; }
+        .hero-tag strong { font-size: 11px; }
+        section { margin-top: 40px; }
+        .section-title { font-size: 18px; margin: 0 0 6px; }
+        .section-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 0 0 18px;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .card {
+            border-radius: var(--radius-lg);
+            background: var(--card-bg);
+            border: 1px solid var(--border-soft);
+            padding: 14px 14px 16px;
+        }
+        .card-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .card-title { font-size: 15px; margin-bottom: 6px; }
+        .card-text {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 10px;
+        }
+        .card-list {
+            font-size: 12px;
+            padding-left: 16px;
+            color: var(--text-muted);
+        }
+        .card-list li { margin-bottom: 4px; }
+        .pill-row {
+            display: flex; flex-wrap: wrap;
+            gap: 6px; margin-top: 8px;
+        }
+        .pill {
+            font-size: 11px;
+            padding: 3px 8px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.5);
+            background: rgba(15, 23, 42, 0.9);
+            color: var(--text-muted);
+        }
+        .split {
+            display: grid;
+            grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+            gap: 20px;
+        }
+        .resume-box {
+            border-radius: var(--radius-lg);
+            background: var(--card-bg);
+            border: 1px solid var(--border-soft);
+            padding: 14px 14px 16px;
+            font-size: 13px;
+        }
+        .resume-box h3 { margin: 0 0 4px; font-size: 15px; }
+        .resume-line {
+            display: flex; justify-content: space-between;
+            font-size: 12px; color: var(--text-muted);
+        }
+        .resume-stack {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        .contacts-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+        .contact-item { font-size: 13px; color: var(--text-muted); }
+        .contact-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.16em;
+            margin-bottom: 4px;
+            color: var(--text-muted);
+        }
+        .contact-value { font-size: 13px; }
+        footer {
+            margin-top: 32px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(148, 163, 184, 0.35);
+            display: flex; flex-wrap: wrap;
+            align-items: center; gap: 10px;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        @media (max-width: 900px) {
+            .hero { grid-template-columns: minmax(0, 1fr); }
+            .hero-card { order: -1; }
+            .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .split { grid-template-columns: minmax(0, 1fr); }
+            .contacts-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        }
+        @media (max-width: 640px) {
+            .page { padding: 12px 10px 32px; }
+            .hero-wrapper { padding: 16px 14px 18px; border-radius: 24px; }
+            .header { flex-direction: column; align-items: flex-start; }
+            .nav { font-size: 11px; }
+            .cards { grid-template-columns: minmax(0, 1fr); }
+            .contacts-grid { grid-template-columns: minmax(0, 1fr); }
+            .hero-actions { flex-direction: column; align-items: stretch; }
+            .btn-primary, .btn-ghost { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="hero-wrapper" id="top">
+        <div class="hero-wave"></div>
+
+        <header class="header">
+            <div class="logo">
+                <div class="logo-mark"><span>J</span></div>
+                <div>
+                    <div class="logo-text-main">JavaVIT</div>
+                    <div class="logo-text-sub">Java · Backend · Bots</div>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="#about">О компании</a>
+                <a href="#services">Услуги</a>
+                <a href="#bots">Telegram-боты</a>
+                <a href="#courses">Курсы</a>
+                <a href="#resume">Резюме</a>
+                <a href="#contacts">Контакты</a>
+            </nav>
+        </header>
+
+        <div class="hero">
+            <div>
+                <div class="hero-label">
+                    <div class="hero-label-dot"></div>
+                    <span>Разработка на Java под ваши задачи</span>
+                </div>
+                <h1 class="hero-title">
+                    <span class="gradient">JavaVIT</span> — разработка backend-систем
+                    и <span class="gradient">Telegram-ботов</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Помогаю компаниям и предпринимателям запускать надёжные сервисы на Java:
+                    от продуманных backend-систем до Telegram-ботов с оплатами, интеграциями и аналитикой.
+                </p>
+                <div class="hero-badges">
+                    <div class="badge">Java · Spring Boot</div>
+                    <div class="badge">PostgreSQL · Kafka · REST</div>
+                    <div class="badge">Telegram Bot API · платежи</div>
+                </div>
+                <div class="hero-actions">
+                    <a href="https://t.me/javavit_ru" class="btn-primary">
+                        <span class="btn-icon">💬</span>
+                        <span>Написать в Telegram</span>
+                    </a>
+                    <a href="resume.html" class="btn-ghost">
+                        <span class="btn-icon">📄</span>
+                        <span>Посмотреть резюме</span>
+                    </a>
+                </div>
+                <div class="hero-note">
+                    Основной контакт: @javavit_ru • личный: @karen_ahper
+                </div>
+            </div>
+
+            <aside class="hero-card">
+                <div class="hero-card-header">
+                    <div class="hero-card-title">Чем я могу быть полезен</div>
+                    <div>Java · Spring · Telegram</div>
+                </div>
+                <div class="hero-card-body">
+                    <ul class="hero-list">
+                        <li>Архитектура и разработка backend-сервисов</li>
+                        <li>Интеграции: платежи, CRM, внешние API</li>
+                        <li>Telegram-боты с оплатой и личным кабинетом</li>
+                        <li>Аналитика данных и рекомендательные механики</li>
+                    </ul>
+                    <div class="hero-tag-grid">
+                        <div class="hero-tag"><span>Stack</span><strong>Java · Spring</strong></div>
+                        <div class="hero-tag"><span>DB</span><strong>PostgreSQL</strong></div>
+                        <div class="hero-tag"><span>Bots</span><strong>Telegram</strong></div>
+                        <div class="hero-tag"><span>Ops</span><strong>Docker · CI/CD</strong></div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <section id="about">
+        <h2 class="section-title">О JavaVIT</h2>
+        <p class="section-subtitle">
+            JavaVIT — это практический опыт в промышленной Java-разработке, архитектуре систем
+            и автоматизации бизнес-процессов. Важен не только стек, но и измеримый эффект: скорость
+            процессов, стабильность, удобство для пользователей.
+        </p>
+        <div class="pill-row">
+            <span class="pill">Микросервисы и интеграции</span>
+            <span class="pill">Highload и надёжность</span>
+            <span class="pill">Работа с данными и EDA</span>
+            <span class="pill">Автоматизация через ботов</span>
+        </div>
+    </section>
+
+    <section id="services">
+        <h2 class="section-title">Услуги</h2>
+        <p class="section-subtitle">
+            Помогу как с развитием уже существующих систем, так и с запуском новых сервисов —
+            от идеи и архитектуры до внедрения и сопровождения.
+        </p>
+        <div class="cards">
+            <article class="card">
+                <div class="card-label">Backend</div>
+                <div class="card-title">Разработка Java-сервисов</div>
+                <div class="card-text">
+                    Надёжные backend-сервисы на Java/Spring: REST API, бизнес-логика, безопасность,
+                    работа с базами данных и сообщениями.
+                </div>
+                <ul class="card-list">
+                    <li>Spring Boot, Spring Cloud</li>
+                    <li>PostgreSQL, оптимизация запросов</li>
+                    <li>Docker, CI/CD, логирование и мониторинг</li>
+                </ul>
+            </article>
+
+            <article class="card">
+                <div class="card-label">Интеграции</div>
+                <div class="card-title">Интеграция систем</div>
+                <div class="card-text">
+                    Связь ваших сервисов между собой и с внешним миром: платёжные шлюзы,
+                    CRM, маркетплейсы, внутренние API.
+                </div>
+                <ul class="card-list">
+                    <li>Проектирование и документирование API</li>
+                    <li>Интеграция с внешними сервисами</li>
+                    <li>Очереди, Kafka, брокеры сообщений</li>
+                </ul>
+            </article>
+
+            <article class="card" id="bots">
+                <div class="card-label">Bots</div>
+                <div class="card-title">Telegram-боты под ключ</div>
+                <div class="card-text">
+                    От простых помощников до ботов с оплатой, личным кабинетом,
+                    расписанием и аналитикой в админке.
+                </div>
+                <ul class="card-list">
+                    <li>Запись по тайм-слотам</li>
+                    <li>Приём платежей и интеграция с кассами</li>
+                    <li>Отзывы, каталог, управление через админ-панель</li>
+                </ul>
+            </article>
+        </div>
+    </section>
+
+    <section id="courses">
+        <h2 class="section-title">Обучение и материалы</h2>
+        <p class="section-subtitle">
+            Собираю и систематизирую материалы по Java, backend-разработке, подготовке к собеседованиям
+            и анализу данных. Фокус на понимании, а не на зубрёжке.
+        </p>
+        <div class="split">
+            <article class="card">
+                <div class="card-label">Education</div>
+                <div class="card-title">Видео-курсы и разборы</div>
+                <div class="card-text">
+                    Конспекты, разборы задач и мини-лекции по Java, структурам данных, Spring
+                    и практическим кейсам из продакшена.
+                </div>
+                <ul class="card-list">
+                    <li>Основы и продвинутая Java</li>
+                    <li>Spring, базы данных, архитектура</li>
+                    <li>Подготовка к интервью</li>
+                </ul>
+                <div class="pill-row" style="margin-top: 10px;">
+                    <a class="pill" href="https://t.me/javavit_ru">Материалы и вопросы в Telegram →</a>
+                </div>
+            </article>
+
+            <article id="resume" class="resume-box">
+                <h3>Резюме Senior Java Developer</h3>
+                <div class="resume-line">
+                    <span>Карен Петросян</span>
+                    <span>Java · Spring · Data</span>
+                </div>
+                <div class="resume-stack">
+                    Микросервисы, интеграции, высоконагруженные системы, работа с данными
+                    и построение Telegram-ботов под бизнес-задачи.
+                </div>
+                <div class="pill-row" style="margin-top: 12px;">
+                    <a href="resume.html" class="pill">Открыть резюме в браузере</a>
+                    <!-- при желании можно добавить PDF -->
+                    <!-- <a href="Karen_Petrosyan_Resume.pdf" class="pill">Скачать резюме (PDF)</a> -->
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section id="contacts">
+        <h2 class="section-title">Контакты</h2>
+        <p class="section-subtitle">
+            Напишите, если вам нужен backend на Java, Telegram-бот или помощь с архитектурой и данными.
+        </p>
+        <div class="contacts-grid">
+            <div class="contact-item">
+                <div class="contact-label">Telegram</div>
+                <div class="contact-value">
+                    <a href="https://t.me/javavit_ru">@javavit_ru</a><br/>
+                    <span style="font-size:12px;opacity:.7;">личный: <a href="https://t.me/karen_ahper">@karen_ahper</a></span>
+                </div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-label">Email</div>
+                <div class="contact-value"><a href="mailto:info@javavit.ru">info@javavit.ru</a></div>
+            </div>
+            <div class="contact-item">
+                <div class="contact-label">GitHub</div>
+                <div class="contact-value">
+                    <a href="https://github.com/Pekar7" target="_blank" rel="noreferrer">github.com/Pekar7</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div>© <span id="year"></span> JavaVIT — разработка на Java и Telegram-боты.</div>
+        <div><a href="#top">Наверх ↑</a></div>
+    </footer>
+</div>
+
+<script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
