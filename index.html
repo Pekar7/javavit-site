@@ -3,1086 +3,722 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JavaVIT — разработка на заказ</title>
+    <title>J-VIT | Future Tech Studio</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg: #020617;
-            --bg-elevated: rgba(15, 23, 42, 0.96);
-            --border-subtle: rgba(148, 163, 184, 0.4);
-            --text-main: #e5e7eb;
-            --text-muted: #9ca3af;
-            --accent: #6366f1;
-            --accent-soft: rgba(99, 102, 241, 0.3);
-            --accent-2: #ec4899;
-            --accent-3: #22c55e;
-            --accent-4: #0ea5e9;
-            --glow: rgba(129, 140, 248, 0.95);
-            --radius-lg: 24px;
-            --radius-md: 18px;
-            --shadow-strong: 0 32px 120px rgba(15, 23, 42, 0.9);
-            --grid-color: rgba(15, 23, 42, 0.7);
-        }
-
+        /* --- СБРОС И ШРИФТЫ --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
         body {
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
-            "Segoe UI", Roboto, sans-serif;
-            background: radial-gradient(circle at top, #020617 0, #000 55%, #020617 100%);
-            color: var(--text-main);
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
-
-        /* ==== ФОН: сетка + орбы ==== */
-
-        .bg-layer {
-            position: fixed;
-            inset: 0;
-            z-index: -3;
-            overflow: hidden;
-        }
-
-        .bg-grid {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
-            background-size: 80px 80px;
-            opacity: 0.3;
-            transform: perspective(900px) rotateX(60deg) translateY(-30%);
-            transform-origin: top;
-        }
-
-        .bg-gradient-orb {
-            position: absolute;
-            border-radius: 999px;
-            filter: blur(80px);
-            opacity: 0.45;
-            mix-blend-mode: screen;
-            animation: pulseOrb 20s ease-in-out infinite alternate;
-        }
-
-        .bg-orb-1 {
-            width: 520px;
-            height: 520px;
-            background: conic-gradient(from 120deg, #4f46e5, #22c55e, #06b6d4, #a855f7, #4f46e5);
-            top: -210px;
-            left: -200px;
-        }
-
-        .bg-orb-2 {
-            width: 420px;
-            height: 420px;
-            background: radial-gradient(circle, #ec4899, #a855f7, transparent 70%);
-            bottom: -180px;
-            right: -130px;
-        }
-
-        .bg-orb-3 {
-            width: 380px;
-            height: 380px;
-            background: radial-gradient(circle, #22c55e, transparent 65%);
-            top: 45%;
-            left: 60%;
-        }
-
-        @keyframes pulseOrb {
-            0% {
-                transform: translate3d(0, 0, 0) scale(1);
-            }
-            50% {
-                transform: translate3d(20px, -10px, 0) scale(1.08);
-            }
-            100% {
-                transform: translate3d(-25px, 15px, 0) scale(0.96);
-            }
-        }
-
-        /* Слой с «звёздной пылью» */
-
-        #particles {
-            position: fixed;
-            inset: 0;
-            z-index: -2;
-            pointer-events: none;
-        }
-
-        @keyframes particleFloat {
-            0% {
-                transform: translateY(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 1;
-            }
-            90% {
-                opacity: 1;
-            }
-            100% {
-                transform: translateY(-80px);
-                opacity: 0;
-            }
-        }
-
-        /* ==== Шапка ==== */
-
-        .topbar {
-            position: sticky;
-            top: 0;
-            z-index: 20;
-            backdrop-filter: blur(18px);
-            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.94), rgba(2, 6, 23, 0.85), transparent);
-            border-bottom: 1px solid rgba(148, 163, 184, 0.18);
-        }
-
-        .topbar-inner {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 14px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 16px;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .logo-mark {
-            width: 34px;
-            height: 34px;
-            border-radius: 999px;
-            background: radial-gradient(circle at 30% 10%, #e5e7eb, #4f46e5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-            color: #020617;
-            box-shadow: 0 0 0 1px rgba(148, 163, 184, 0.3), 0 18px 40px rgba(15, 23, 42, 0.9);
-        }
-
-        .logo-title-main {
-            font-weight: 600;
-            letter-spacing: 0.03em;
-            font-size: 1.02rem;
-        }
-
-        .logo-title-sub {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-        }
-
-        .nav {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-            font-size: 0.9rem;
-        }
-
-        .nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            position: relative;
-            padding-block: 4px;
-        }
-
-        .nav a::after {
-            content: "";
-            position: absolute;
-            left: 0;
-            bottom: -2px;
-            width: 0;
-            height: 1px;
-            background: linear-gradient(to right, var(--accent), var(--accent-2));
-            transition: width 0.25s;
-        }
-
-        .nav a:hover {
-            color: var(--text-main);
-        }
-
-        .nav a:hover::after {
-            width: 100%;
-        }
-
-        .nav-cta {
-            padding: 7px 14px;
-            border-radius: 999px;
-            border: 1px solid rgba(129, 140, 248, 0.7);
-            color: #e5e7eb;
-            background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.25), transparent);
-        }
-
-        .nav-cta:hover {
-            background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.5), transparent);
-        }
-
-        /* ==== Основная обёртка ==== */
-
-        .shell {
-            max-width: 1120px;
-            margin: 0 auto;
-            padding: 40px 20px 64px;
-            display: flex;
-            flex-direction: column;
-            gap: 80px;
-        }
-
-        /* ==== HERO ==== */
-
-        .hero {
-            display: grid;
-            grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
-            gap: 40px;
-            align-items: center;
-        }
-
-        .hero-kicker {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.78rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--accent-4);
-            margin-bottom: 14px;
-            background: rgba(15, 23, 42, 0.9);
-            padding: 6px 10px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.3);
-        }
-
-        .hero-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 999px;
-            background: radial-gradient(circle, #22c55e, #16a34a);
-            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.25);
-        }
-
-        .hero-title {
-            font-size: clamp(2.4rem, 4vw, 3.2rem);
-            line-height: 1.1;
-            margin-bottom: 18px;
-            font-weight: 700;
-        }
-
-        .hero-title span {
-            background: linear-gradient(135deg, #a855f7, #6366f1, #22c55e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero-text {
-            font-size: 0.98rem;
-            color: var(--text-muted);
-            max-width: 540px;
-            line-height: 1.7;
-            margin-bottom: 18px;
-        }
-
-        .hero-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 22px;
-        }
-
-        .chip {
-            padding: 6px 10px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.45);
-            font-size: 0.78rem;
-            color: var(--text-main);
-            background: linear-gradient(to right, rgba(15, 23, 42, 0.9), rgba(15, 23, 42, 0.6));
-        }
-
-        .hero-actions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 14px;
-            margin-bottom: 12px;
-        }
-
-        .btn-primary {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 11px 20px;
-            border-radius: 999px;
-            background: linear-gradient(135deg, #4f46e5, #6366f1, #0ea5e9);
-            color: #e5e7eb;
-            text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.55);
-        }
-
-        .btn-primary:hover {
-            filter: brightness(1.05);
-            transform: translateY(-1px);
-        }
-
-        .btn-ghost {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 10px 18px;
-            border-radius: 999px;
-            border: 1px solid rgba(148, 163, 184, 0.6);
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 0.88rem;
-            background: rgba(15, 23, 42, 0.6);
-        }
-
-        .btn-ghost:hover {
-            background: rgba(15, 23, 42, 0.9);
-        }
-
-        .hero-note {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-        }
-
-        /* Правый блок — псевдо IDE/код */
-
-        .hero-right {
-            display: flex;
-            justify-content: center;
-        }
-
-        .code-panel {
-            width: 100%;
-            max-width: 420px;
-            border-radius: 26px;
-            background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.05), rgba(15, 23, 42, 0.98));
-            border: 1px solid rgba(148, 163, 184, 0.45);
-            box-shadow: var(--shadow-strong);
-            padding: 16px 18px 18px;
-            transform: rotateX(18deg) rotateY(-18deg);
-            transform-style: preserve-3d;
-            transition: transform 0.25s ease-out;
-        }
-
-        .code-panel-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            font-size: 0.78rem;
-            color: var(--text-muted);
-        }
-
-        .code-dots {
-            display: flex;
-            gap: 5px;
-        }
-
-        .code-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 999px;
-        }
-
-        .code-dot.red { background: #f97373; }
-        .code-dot.yellow { background: #facc15; }
-        .code-dot.green { background: #22c55e; }
-
-        .code-label {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: rgba(148, 163, 184, 0.9);
-            margin-bottom: 10px;
-        }
-
-        .code-body {
-            font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-            font-size: 0.74rem;
+            background-color: #050011;
+            color: #fff;
             line-height: 1.6;
-            background: radial-gradient(circle at 0 0, rgba(37, 99, 235, 0.25), transparent 55%);
-            border-radius: 18px;
-            padding: 10px 12px;
-            border: 1px solid rgba(51, 65, 85, 0.9);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
         }
 
-        .code-comment { color: #6b7280; }
-        .code-keyword { color: #60a5fa; }
-        .code-type { color: #fbbf24; }
-        .code-string { color: #4ade80; }
-        .code-annot { color: #f472b6; }
+        a { text-decoration: none; color: inherit; }
 
-        /* ==== Блок услуг (стиль 1) ==== */
-
-        .section-heading {
-            font-size: 0.86rem;
-            text-transform: uppercase;
-            letter-spacing: 0.18em;
-            color: var(--accent-4);
-            margin-bottom: 8px;
+        /* --- ГРАДИЕНТЫ --- */
+        .gradient-text {
+            background: linear-gradient(45deg, #00f2ea, #ff00cc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
         }
 
-        .section-heading span {
-            color: var(--text-muted);
+        /* --- ШАПКА --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 5%;
+            background: rgba(5, 0, 17, 0.8);
+            backdrop-filter: blur(20px);
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        #services {
-            display: flex;
-            flex-direction: column;
-            gap: 28px;
+        .logo-wrapper { 
+            position: relative; cursor: pointer; 
+            display: flex; align-items: center; gap: 15px; 
+        }
+        
+        .logo-img { 
+            width: 100px;
+            height: 100px; 
+            object-fit: contain;
+            border-radius: 50%;
+            animation: logoPulse 3s infinite ease-in-out alternate;
         }
 
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 22px;
+        @keyframes logoPulse {
+            0% { 
+                transform: scale(1); 
+                filter: drop-shadow(0 0 5px rgba(0, 242, 234, 0.6));
+            }
+            100% { 
+                transform: scale(1.1); 
+                filter: drop-shadow(0 0 15px rgba(255, 0, 204, 0.9));
+            }
+        }
+        
+        .header-logo-text {
+            font-size: 1.8rem; font-weight: 900; letter-spacing: 1px; text-transform: uppercase;
         }
 
-        .card {
-            background: linear-gradient(145deg, rgba(15, 23, 42, 0.96), rgba(15, 23, 42, 0.98));
-            border-radius: var(--radius-lg);
-            border: 1px solid rgba(148, 163, 184, 0.45);
-            box-shadow: 0 28px 60px rgba(15, 23, 42, 0.85);
+        nav a { 
+            margin-left: 25px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            transition: 0.3s; position: relative; color: #ccc;
+        }
+        nav a:hover, nav a.active { color: #fff; text-shadow: 0 0 10px #00f2ea; }
+        nav a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 0;
+            background: #ff00cc; transition: 0.3s;
+        }
+        nav a:hover::after, nav a.active::after { width: 100%; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
             position: relative;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center;
             overflow: hidden;
         }
+        #neural-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; }
+        .hero-content { position: relative; z-index: 2; max-width: 1000px; padding: 0 20px; background: radial-gradient(circle, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0) 70%); }
 
-        .card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at top left, rgba(129, 140, 248, 0.18), transparent 55%);
-            opacity: 0;
-            transition: opacity 0.25s;
+        .mega-glitch {
+            font-size: 6rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            line-height: 1;
+            margin-bottom: 20px;
+            position: relative;
+            letter-spacing: -2px;
+            background: linear-gradient(90deg, #00f2ea, #ff00cc, #00f2ea);
+            background-size: 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shine 3s linear infinite;
+            filter: drop-shadow(0 0 15px rgba(0, 242, 234, 0.4));
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        .mega-glitch::before, .mega-glitch::after {
+            content: 'JAVAVIT'; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: inherit; -webkit-background-clip: text; -webkit-text-fill-color: transparent; opacity: 0.8; z-index: -1;
+        }
+        .mega-glitch::before { animation: glitch-layer-1 3s infinite linear alternate-reverse; }
+        .mega-glitch::after { animation: glitch-layer-2 3s infinite linear alternate-reverse; }
+
+        @keyframes glitch-layer-1 {
+            0% { clip-path: inset(20% 0 80% 0); transform: translate(-2px, 1px); }
+            20% { clip-path: inset(60% 0 10% 0); transform: translate(2px, -1px); }
+            40% { clip-path: inset(40% 0 50% 0); transform: translate(-2px, 2px); }
+            60% { clip-path: inset(80% 0 5% 0); transform: translate(2px, -2px); }
+            80% { clip-path: inset(10% 0 70% 0); transform: translate(-1px, 1px); }
+            100% { clip-path: inset(30% 0 20% 0); transform: translate(1px, -1px); }
+        }
+        @keyframes glitch-layer-2 {
+            0% { clip-path: inset(10% 0 60% 0); transform: translate(2px, -1px); }
+            20% { clip-path: inset(80% 0 5% 0); transform: translate(-2px, 2px); }
+            40% { clip-path: inset(30% 0 20% 0); transform: translate(2px, 1px); }
+            60% { clip-path: inset(15% 0 80% 0); transform: translate(-1px, -2px); }
+            80% { clip-path: inset(55% 0 10% 0); transform: translate(1px, 2px); }
+            100% { clip-path: inset(40% 0 30% 0); transform: translate(-2px, 1px); }
         }
 
-        .card-inner {
+        .hero p { font-size: 1.4rem; color: #b0b0ff; margin-bottom: 40px; font-family: 'Consolas', monospace; }
+
+        /* --- КНОПКИ --- */
+        .btn-group { display: flex; gap: 30px; justify-content: center; margin-top: 40px; align-items: center; }
+
+        .btn-cyber {
+            position: relative; padding: 18px 40px; font-size: 1.1rem; font-weight: 800; color: #fff; background: transparent; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 2px;
+            clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px); transition: 0.3s; display: inline-block;
+        }
+        .btn-cyber::before {
+            content: ''; position: absolute; top: 2px; left: 2px; right: 2px; bottom: 2px; background: #050011; z-index: -1;
+            clip-path: polygon(13px 0, 100% 0, 100% calc(100% - 13px), calc(100% - 13px) 100%, 0 100%, 0 13px); transition: 0.3s;
+        }
+        .btn-cyber-launch::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, #3333ff, #ff00cc); z-index: -2; }
+        .btn-cyber-launch:hover::before { background: rgba(255, 0, 204, 0.2); }
+        .btn-cyber-launch:hover { text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); transform: translateY(-3px); filter: drop-shadow(0 0 15px #ff00cc); }
+        .btn-cyber-portfolio::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(45deg, #00f2ea, #3333ff); z-index: -2; }
+        .btn-cyber-portfolio:hover::before { background: rgba(0, 242, 234, 0.2); }
+        .btn-cyber-portfolio:hover { text-shadow: 0 0 10px rgba(255, 255, 255, 0.8); transform: translateY(-3px); filter: drop-shadow(0 0 15px #00f2ea); }
+        .btn-cyber:active { transform: scale(0.95); }
+
+        /* --- СЕКЦИИ --- */
+        .section { padding: 100px 5%; position: relative; z-index: 2; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .section-title {
+            text-align: center; font-size: 3rem; margin-bottom: 80px; font-weight: 800; text-transform: uppercase;
+            background: linear-gradient(45deg, #00f2ea, #3333ff, #ff00cc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block; width: 100%;
+        }
+
+        .card { background: rgba(20, 20, 35, 0.6); border: 1px solid rgba(255,255,255,0.05); padding: 30px; border-radius: 15px; transition: 0.4s; position: relative; overflow: hidden; }
+        .card:hover { transform: translateY(-15px); border-color: #00f2ea; box-shadow: 0 15px 40px rgba(0, 242, 234, 0.1); }
+        .badge { 
+            background: #2a0033; padding: 5px 12px; border-radius: 4px; font-size: 0.8rem; 
+            color: #fff; border: 1px solid #ff00cc; display: block; width: fit-content; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;
+        }
+
+        /* --- УСЛУГИ / ОКНА --- */
+        .service-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 60px; margin-bottom: 100px; }
+        .service-text { flex: 1; min-width: 300px; text-align: left; }
+        .service-text h2 {
+            font-size: 2.5rem; margin-bottom: 20px; line-height: 1.1; font-weight: 800; text-transform: uppercase;
+            background: linear-gradient(45deg, #00f2ea, #3333ff, #ff00cc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;
+        }
+        .service-text p { color: #aaa; font-size: 1.1rem; margin-bottom: 30px; }
+        .btn-service {
+            padding: 15px 40px; border: none; border-radius: 30px; font-size: 1rem; font-weight: bold; text-transform: uppercase; color: #fff;
+            background: linear-gradient(45deg, #00f2ea, #3333ff, #ff00cc); background-size: 200% 200%; cursor: pointer;
+            box-shadow: 0 0 15px rgba(0, 242, 234, 0.3); transition: all 0.3s ease; display: inline-block;
+        }
+        .btn-service:hover { background-position: 100% 0; box-shadow: 0 0 30px rgba(255, 0, 204, 0.6); transform: translateY(-3px); }
+        .btn-service:active { transform: scale(0.95) translateY(0); box-shadow: 0 0 10px rgba(255, 0, 204, 0.8); filter: brightness(1.3); }
+
+        .tech-window {
+            flex: 1;
+            min-width: 300px;
+            background: #0e0e10;
+            border-radius: 12px;
+            border: 1px solid #333;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
             position: relative;
+        }
+
+        .window-header {
+            padding: 12px;
+            background: #1a1a1f;
+            border-bottom: 1px solid #333;
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            opacity: 0.7;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+        }
+        .dot-close  { background:#ff5f56; }
+        .dot-min    { background:#ffbd2e; }
+        .dot-max    { background:#27c93f; }
+
+        .dot:hover {
+            opacity: 1;
+            transform: scale(1.15);
+            box-shadow: 0 0 8px rgba(255,255,255,0.5);
+        }
+
+        .code-body { padding: 25px; font-family: 'Consolas', monospace; color: #ccc; font-size: 0.9rem; }
+        .kwd { color: #c586c0; } .str { color: #ce9178; } .cls { color: #4ec9b0; } .ano { color: #569cd6; }
+
+        /* --- НОВАЯ АРХ-СХЕМА --- */
+        .arch-diagram {
+            padding: 28px 32px 34px;
             display: flex;
             flex-direction: column;
-            padding: 22px 22px 20px;
-            gap: 18px;
+            gap: 14px;
+            align-items: stretch;
+            font-size: 0.85rem;
         }
 
-        .card:hover::before {
+        .arch-layer {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .arch-node {
+            min-width: 150px;
+            padding: 9px 16px;
+            border-radius: 999px;
+            text-align: center;
+            background: radial-gradient(circle at top left, #181826 0%, #050011 80%);
+            border: 1px solid rgba(255,255,255,0.07);
+            box-shadow:
+                0 0 0 1px rgba(0,242,234,0.08),
+                0 10px 25px rgba(0,0,0,0.55);
+            color: #e5e5ff;
+            letter-spacing: 0.02em;
+        }
+
+        .arch-node.highlight {
+            border-image: linear-gradient(45deg, #ff00cc, #00f2ea) 1;
+            border-width: 2px;
+            border-style: solid;
+            color: #ffbdf7;
+            font-weight: 600;
+            box-shadow:
+                0 0 18px rgba(255,0,204,0.3),
+                0 0 32px rgba(0,242,234,0.15);
+        }
+
+        .arch-arrow-v {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #888;
+        }
+
+        .arch-arrow-h {
+            align-self: center;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        /* Тряска окна */
+        .tech-window.shaking {
+            animation: windowShake 0.35s ease;
+        }
+        @keyframes windowShake {
+            0%   { transform: translateX(0); }
+            20%  { transform: translateX(-4px); }
+            40%  { transform: translateX(4px); }
+            60%  { transform: translateX(-3px); }
+            80%  { transform: translateX(3px); }
+            100% { transform: translateX(0); }
+        }
+
+        /* Пузырёк "Не балуйся" */
+        .toast-bubble {
+            position: absolute;
+            bottom: 18px;
+            left: 20px;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-size: 0.8rem;
+            background: linear-gradient(45deg, #00f2ea, #ff00cc);
+            color: #050011;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateY(10px);
+            pointer-events: none;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+        .toast-bubble.visible {
             opacity: 1;
+            transform: translateY(0);
         }
 
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(129, 140, 248, 0.9);
-        }
-
-        .card-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 5px 10px;
-            border-radius: 999px;
-            background: rgba(15, 23, 42, 0.9);
-            border: 1px solid rgba(148, 163, 184, 0.5);
-            font-size: 0.76rem;
-            color: var(--text-muted);
-            align-self: flex-start;
-        }
-
-        .card-icon-dot {
-            width: 18px;
-            height: 18px;
-            border-radius: 999px;
+        /* ---- ВИДЕО-ФРЕЙМ ---- */
+        .video-frame {
+            position: relative;
+            background: #000;
+            aspect-ratio: 16/9;
+            overflow: hidden;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: radial-gradient(circle, #22c55e, #16a34a);
+        }
+        .video-frame video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
         }
 
-        .card-title-main {
-            font-size: 1.05rem;
-            margin-bottom: 4px;
-        }
+        .music-player-preview { margin: 20px; padding: 15px; background: rgba(0,0,0,0.5); border-radius: 8px; border: 1px solid #444; display: flex; align-items: center; gap: 15px; }
+        .album-art { width: 250px; height: 250px; border-radius: 6px; background: linear-gradient(135deg, #00f2ea, #000); overflow: hidden; }
+        .album-art img { width: 100%; height: 100%; object-fit: cover; }
+        .track-info { flex: 1; }
+        .track-title { font-weight: bold; font-size: 1rem; color: #fff; }
+        .track-artist { font-size: 0.8rem; color: #aaa; margin-bottom: 8px; }
+        .waveform { display: flex; align-items: flex-end; gap: 3px; height: 25px; }
+        .bar { width: 4px; background: #00f2ea; border-radius: 2px; animation: wave 1s infinite ease-in-out; }
+        .bar:nth-child(2n) { animation-duration: 1.2s; background: #00aaff; }
+        @keyframes wave { 0%, 100% { height: 5px; } 50% { height: 25px; } }
 
-        .card-sub {
-            font-size: 0.88rem;
-            color: var(--text-muted);
-            line-height: 1.7;
-            margin-bottom: 8px;
-        }
+        .service-list-styled { list-style: none; color: #ddd; margin-bottom: 20px;}
+        .service-list-styled li { margin-bottom: 10px; }
 
-        .card-list {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 6px;
-            font-size: 0.86rem;
-            margin-top: 2px;
-        }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px; }
+        .gallery-item { height: 300px; border-radius: 10px; overflow: hidden; position: relative; cursor: pointer; }
+        .gallery-item img, .gallery-item video, .gallery-item iframe { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; display: block; border: none; }
+        .gallery-item:hover img, .gallery-item:hover video { transform: scale(1.1); opacity: 0.6; }
+        .gallery-overlay { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(to top, #000, transparent); opacity: 0; transition: 0.3s; }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
 
-        .card-list li::before {
-            content: "•";
-            margin-right: 6px;
-            color: var(--accent-3);
-        }
+        /* --- КОНТАКТЫ --- */
+        .contact-card { background: rgba(20, 20, 35, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 50px; max-width: 800px; margin: 0 auto; text-align: left; }
+        .contact-intro-text { font-size: 1.1rem; color: #ccc; margin-bottom: 40px; line-height: 1.8; border-left: 4px solid #ff00cc; padding-left: 20px; }
+        .contact-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
+        .contact-item { display: flex; align-items: center; gap: 15px; padding: 15px 25px; background: rgba(255,255,255,0.05); border-radius: 12px; border: 1px solid rgba(255,255,255,0.05); text-decoration: none; color: #fff; font-weight: 500; transition: 0.3s; }
+        .contact-item:hover { background: rgba(255,255,255,0.1); border-color: #00f2ea; transform: translateX(5px); }
+        .contact-icon { width: 24px; height: 24px; fill: #00f2ea; }
 
-        /* Правая часть карточки — «мини-картинка» */
+        footer { text-align: center; padding: 50px; color: #666; font-size: 0.9rem; background: #020005; }
 
-        .card-visual {
-            margin-top: 10px;
-            border-radius: var(--radius-md);
-            padding: 12px 12px 10px;
-            background:
-                radial-gradient(circle at 10% 0, rgba(59, 130, 246, 0.5), transparent 55%),
-                radial-gradient(circle at 100% 100%, rgba(236, 72, 153, 0.4), transparent 45%),
-                linear-gradient(145deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
-            border: 1px solid rgba(148, 163, 184, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .card-visual-tag {
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: rgba(226, 232, 240, 0.85);
-            margin-bottom: 6px;
-        }
-
-        .card-visual-lines {
-            display: grid;
-            gap: 6px;
-        }
-
-        .card-line {
-            height: 6px;
-            border-radius: 999px;
-            background: linear-gradient(to right, rgba(148, 163, 184, 0.25), rgba(148, 163, 184, 0.7));
-        }
-
-        .card-line:nth-child(2) {
-            width: 78%;
-            background: linear-gradient(to right, rgba(236, 72, 153, 0.2), rgba(236, 72, 153, 0.7));
-        }
-
-        .card-line:nth-child(3) {
-            width: 55%;
-            background: linear-gradient(to right, rgba(34, 197, 94, 0.25), rgba(34, 197, 94, 0.8));
-        }
-
-        /* ==== Нам доверяют ==== */
-
-        #trust {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .trust-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 18px;
-        }
-
-        .trust-card {
-            border-radius: var(--radius-md);
-            border: 1px solid rgba(148, 163, 184, 0.4);
-            padding: 16px 16px 14px;
-            background: radial-gradient(circle at top left, rgba(148, 163, 184, 0.15), rgba(15, 23, 42, 0.98));
-            font-size: 0.86rem;
-        }
-
-        .trust-label {
-            font-size: 0.72rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: var(--text-muted);
-            margin-bottom: 6px;
-        }
-
-        .trust-name {
-            font-size: 1.02rem;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-
-        .trust-note {
-            font-size: 0.82rem;
-            color: var(--text-muted);
-        }
-
-        .trust-name.nlmk {
-            background: linear-gradient(120deg, #22c55e, #4ade80);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .trust-name.rzd {
-            background: linear-gradient(120deg, #f97373, #fb923c);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .trust-name.ikea {
-            background: linear-gradient(120deg, #38bdf8, #0ea5e9);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .trust-name.ozon {
-            background: linear-gradient(120deg, #6366f1, #a855f7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        /* ==== Контакты ==== */
-
-        .contact-section {
-            border-radius: var(--radius-lg);
-            border: 1px solid rgba(148, 163, 184, 0.5);
-            padding: 26px 24px 24px;
-            background: linear-gradient(140deg, rgba(15, 23, 42, 0.98), rgba(15, 23, 42, 0.96));
-            box-shadow: var(--shadow-strong);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .contact-headline {
-            font-size: 1.15rem;
-        }
-
-        .contact-subline {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            max-width: 640px;
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 18px;
-            margin-top: 10px;
-            font-size: 0.86rem;
-        }
-
-        .contact-label {
-            font-size: 0.75rem;
-            text-transform: uppercase;
-            letter-spacing: 0.16em;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .contact-value a {
-            color: var(--text-main);
-            text-decoration: none;
-        }
-
-        .contact-value a:hover {
-            text-decoration: underline;
-        }
-
-        footer {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-align: center;
-        }
-
-        footer a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-        /* ==== Адаптивность ==== */
-
-        @media (max-width: 1024px) {
-            .cards-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-            .trust-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-            .contact-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
-        @media (max-width: 900px) {
-            .hero {
-                grid-template-columns: minmax(0, 1fr);
-            }
-
-            .hero-right {
-                order: -1;
-            }
-
-            .code-panel {
-                transform: none;
-            }
-
-            .topbar-inner {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .nav {
-                flex-wrap: wrap;
-            }
-        }
-
-        @media (max-width: 700px) {
-            .cards-grid {
-                grid-template-columns: minmax(0, 1fr);
-            }
-            .trust-grid {
-                grid-template-columns: minmax(0, 1fr);
-            }
-            .contact-grid {
-                grid-template-columns: minmax(0, 1fr);
-            }
-        }
-
-        @media (max-width: 600px) {
-            .shell {
-                padding-inline: 16px;
-            }
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 3rem; }
+            .mega-glitch { font-size: 3.5rem; }
+            .btn-group { flex-direction: column; }
+            .btn-cyber { width: 100%; margin-bottom: 15px; }
+            header { flex-direction: column; gap: 15px; }
+            nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 15px; }
+            nav a { margin: 0; }
+            .service-row { flex-direction: column !important; } 
+            .contact-card { padding: 30px 20px; }
         }
     </style>
 </head>
 <body>
-<div class="bg-layer">
-    <div class="bg-grid"></div>
-    <div class="bg-gradient-orb bg-orb-1"></div>
-    <div class="bg-gradient-orb bg-orb-2"></div>
-    <div class="bg-gradient-orb bg-orb-3"></div>
-</div>
 
-<div class="bg-layer" id="particles"></div>
+    <canvas id="neural-canvas"></canvas>
 
-<div class="topbar">
-    <div class="topbar-inner">
-        <div class="logo">
-            <div class="logo-mark">J</div>
-            <div class="logo-title">
-                <div class="logo-title-main">JavaVIT</div>
-                <div class="logo-title-sub">Разработка на Java · Боты · Data/AI</div>
-            </div>
+    <header>
+        <div class="logo-wrapper" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            <img src="assets/logo.jpg" alt="J-VIT Logo" class="logo-img">
+            <span class="header-logo-text">J-<span class="gradient-text">VIT</span></span>
         </div>
-        <nav class="nav">
-            <a href="#services">Услуги</a>
-            <a href="#trust">Нам доверяют</a>
-            <a href="#contacts">Контакты</a>
-            <a href="resume.html" class="nav-cta">Резюме</a>
+        <nav>
+            <a href="#services-block" class="nav-link">Услуги</a>
+            <a href="#networks" class="nav-link">Стек</a>
+            <a href="#contact" class="nav-link">Контакты</a>
         </nav>
-    </div>
-</div>
+    </header>
 
-<main class="shell">
-    <!-- HERO -->
     <section class="hero">
-        <div class="hero-left">
-            <div class="hero-kicker">
-                <div class="hero-dot"></div>
-                <span>Java-разработка на заказ · от идеи до продакшена</span>
-            </div>
-            <h1 class="hero-title">
-                JavaVIT —<br>
-                <span>разработка на заказ</span>
-            </h1>
-            <p class="hero-text">
-                Делаем под ключ веб-приложения, backend-сервисы, Telegram-ботов и решения с Data/AI.
-                Современный стек, продуманная архитектура и фокус на том, чтобы продукт реально работал
-                в вашем бизнесе — а не только в презентациях.
-            </p>
-            <div class="hero-tags">
-                <div class="chip">Java · Spring Boot · PostgreSQL</div>
-                <div class="chip">Telegram-боты</div>
-                <div class="chip">44-ФЗ · 223-ФЗ</div>
-                <div class="chip">Data/AI</div>
-            </div>
-            <div class="hero-actions">
-                <a class="btn-primary" href="https://t.me/javavit_ru" target="_blank" rel="noreferrer">
-                    Обсудить задачу в Telegram
-                </a>
-                <a class="btn-ghost" href="resume.html" target="_blank" rel="noreferrer">
-                    Посмотреть резюме
-                </a>
-            </div>
-            <div class="hero-note">
-                От проектов для НЛМК и РЖД до автоматизации продавцов на маркетплейсах.
+        <div class="hero-content">
+            <div style="letter-spacing: 4px; color: #00f2ea; font-weight: bold; margin-bottom: 10px;">DIGITAL PRODUCTION STUDIO</div>
+            <div class="mega-glitch">JAVAVIT</div>
+            <p id="typewriter-text"></p>
+            <div class="btn-group">
+                <button class="btn-cyber btn-cyber-launch" onclick="document.getElementById('services-block').scrollIntoView({behavior: 'smooth'});">
+                    Запустить Проект
+                </button>
+                <button class="btn-cyber btn-cyber-portfolio" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'});">
+                    Контакты
+                </button>
             </div>
         </div>
+    </section>
 
-        <div class="hero-right">
-            <div class="code-panel" id="codePanel">
-                <div class="code-panel-header">
-                    <div class="code-dots">
-                        <div class="code-dot red"></div>
-                        <div class="code-dot yellow"></div>
-                        <div class="code-dot green"></div>
-                    </div>
-                    <div>Service.java</div>
+    <section id="services-block" class="section">
+        <h2 class="section-title">Услуги Студии</h2>
+        
+        <div class="service-row">
+            <div class="service-text">
+                <span class="badge" style="background: #ff00cc; border: none; color: #fff;">Highload Backend</span>
+                <h2>WEB ПРИЛОЖЕНИЯ / <br>TELEGRAM BOTS</h2>
+                <p>Мы строим надежные и красивые системы для вашего бизнеса. <br>Сайт / Веб-приложение / Телеграм Боты / Парсеры сайтов</p>
+                <button class="btn-service" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'});">Обсудить ТЗ</button>
+            </div>
+            <div class="tech-window">
+                <div class="window-header">
+                    <div class="dot dot-close"></div>
+                    <div class="dot dot-min"></div>
+                    <div class="dot dot-max"></div>
                 </div>
-                <div class="code-label">JAVA · BACKEND · BOTS</div>
                 <div class="code-body">
-<span class="code-comment">// JavaVIT — минимальный пример сервиса</span><br>
-<span class="code-annot">@Service</span><br>
-<span class="code-keyword">public class</span> <span class="code-type">OrderService</span> {<br><br>
-&nbsp;&nbsp;<span class="code-keyword">private final</span> <span class="code-type">OrderRepository</span> repository;<br>
-&nbsp;&nbsp;<span class="code-keyword">private final</span> <span class="code-type">NotificationClient</span> notify;<br><br>
-&nbsp;&nbsp;<span class="code-keyword">public</span> OrderService(
-        OrderRepository repository,
-        NotificationClient notify) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">this</span>.repository = repository;<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">this</span>.notify = notify;<br>
-&nbsp;&nbsp;}<br><br>
-&nbsp;&nbsp;<span class="code-annot">@Transactional</span><br>
-&nbsp;&nbsp;<span class="code-keyword">public</span> <span class="code-type">Order</span> create(<span class="code-type">OrderRequest</span> request) {<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// 1. валидация и доменная логика</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-type">Order</span> order = Order.from(request);<br><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// 2. сохранение в PostgreSQL</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;order = repository.save(order);<br><br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-comment">// 3. уведомление через Telegram-бота</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;notify.send(<span class="code-string">"Новый заказ "</span> + order.id());<br>
-&nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword">return</span> order;<br>
-&nbsp;&nbsp;}<br>
-}<br>
+                    <span class="ano">@Service</span><br>
+                    <span class="ano">@RequiredArgsConstructor</span><br>
+                    <span class="kwd">public class</span> <span class="cls">JavaVitCore</span> {<br>
+                    &nbsp;&nbsp;<span class="kwd">private final</span> <span class="cls">AiVideoClient</span> aiVideo;<br>
+                    &nbsp;&nbsp;<span class="kwd">private final</span> <span class="cls">TelegramBot</span> bot;<br>
+                    &nbsp;&nbsp;<br>
+                    &nbsp;&nbsp;<span class="ano">@PostConstruct</span><br>
+                    &nbsp;&nbsp;<span class="kwd">void</span> <span class="cls">launch</span>() {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;bot.send(<span class="str">"🛰 JavaVIT core online"</span>);<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;aiVideo.warmup();<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;System.out.println(<span class="str">"⚡ Ready for highload & AI tasks"</span>);<br>
+                    &nbsp;&nbsp;}<br>
+                    }
                 </div>
             </div>
+        </div>
+
+        <div class="service-row">
+            <div class="service-text">
+                <span class="badge" style="background: #3333ff; border: none; color: #fff;">System Design & AI</span>
+                <h2>АРХИТЕКТУРА,<br> ДАННЫЕ И ИИ</h2>
+                <p>Проектируем сложные распределенные системы и внедряем искусственный интеллект в бизнес-процессы (LLM, GPT).</p>
+                <button class="btn-service" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'});">Консультация</button>
+            </div>
+            <div class="tech-window">
+                <div class="window-header">
+                    <div class="dot" style="background:#555"></div>
+                </div>
+                <div class="arch-diagram">
+                    <div class="arch-layer">
+                        <div class="arch-node">Web / Mobile / Telegram Bot</div>
+                    </div>
+                    <div class="arch-arrow-v">REST / WebSocket / gRPC</div>
+                    <div class="arch-layer">
+                        <div class="arch-node">API Gateway</div>
+                        <div class="arch-arrow-h">➜</div>
+                        <div class="arch-node highlight">JavaVIT Core<br><span style="font-size:0.7rem; opacity:0.8;">Spring Boot · Kafka · Auth</span></div>
+                    </div>
+                    <div class="arch-arrow-v">Events · Async Tasks · Tracing</div>
+                    <div class="arch-layer">
+                        <div class="arch-node">LLM / GPT Provider</div>
+                        <div class="arch-node">Vector DB / Embeddings</div>
+                        <div class="arch-node">Data Lake / DWH</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="service-row">
+            <div class="service-text">
+                <span class="badge" style="background: #d6249f; border: none; color: #fff;">Creative Art</span>
+                <h2>AI ИЛЛЮСТРАЦИИ<br> КАРТОЧКИ ТОВАРОВ WB & OZON</h2>
+                <p>Уникальный визуальный контент. <br>Карточки товаров / Обложки для книг и музыкальных альбомов/ Постеры.</p>
+                <button class="btn-service" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'});">Заказать Арт</button>
+            </div>
+            <div class="tech-window">
+                <div class="window-header">
+                    <div class="dot" style="background:#555"></div>
+                </div>
+                <img src="assets/first.jpg" style="width:100%; display:block; object-fit:cover;" alt="AI Art Example">
+            </div>
+        </div>
+
+        <div class="service-row">
+            <div class="service-text">
+                <span class="badge" style="background: #ff5722; border: none; color: #fff;">Video Production</span>
+                <h2>ГЕНЕРАЦИЯ ВИДЕО КОНТЕНТА</h2>
+                <p>Генерация клипов / Видео поздравление / Оживление фотографий (Image-to-Video) / Создание рекламных роликов и Reel & Shorts для Instagram / Facebook.</p>
+                <button class="btn-service" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'});">Заказать Видео</button>
+            </div>
+            <div class="tech-window">
+                <div class="window-header">
+                    <div class="dot" style="background:#555"></div>
+                </div>
+                <div class="video-frame">
+                    <video id="service-video" preload="auto" muted playsinline autoplay loop>
+                        <source src="assets/second.mp4" type="video/mp4">
+                        Ваш браузер не поддерживает видео.
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <div class="service-row">
+            <div class="service-text">
+                <span class="badge" style="background: #00f2ea; border: none; color: #000;">Music AI</span>
+                <h2>MUSIC ВИДЕО<br> AI</h2>
+                <p>Полноценные клипы под вашу музыку. Синхронизация видеоряда с битом, создание атмосферных вижуалайзеров.</p>
+                <button class="btn-service" onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'});">Заказать Клип</button>
+            </div>
+            <div class="tech-window">
+                <div class="window-header">
+                    <div class="dot" style="background:#555"></div>
+                </div>
+                <div class="music-player-preview">
+                    <div class="album-art"><img src="assets/third.jpg" alt="Album"></div>
+                    <div class="track-info">
+                        <div class="track-title">AI Visualization</div>
+                        <div class="track-artist">J-VIT Rec.</div>
+                        <div class="waveform">
+                            <div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div><div class="bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section id="networks" class="section" style="background: #080016;">
+        <h2 class="section-title">Стек Технологий</h2>
+        <div class="grid-container">
+            <div class="card"><span class="badge">Code</span><h3>Java, Python, JS</h3><p>Backend / Frontend Core</p></div>
+            <div class="card"><span class="badge">DB</span><h3>PostgreSQL, Oracle, MySQL</h3><p>Big Data</p></div>
+            <div class="card"><span class="badge">LLM</span><h3>GPT, Claude, Gemini</h3><p>Технологии для ИИ</p></div>
+            <div class="card" style="border-color: #a366ff;"><span class="badge">Analytics</span><h3>Аналитика</h3><p>Глубокий анализ проекта</p></div>
+            <div class="card"><span class="badge">Art</span><h3>Midjourney V6</h3><p>Карточки товаров ИИ</p></div>
+            <div class="card"><span class="badge">Video</span><h3>Runway Gen-3</h3><p>Визуализация AI</p></div>
+            <div class="card"><span class="badge">Realism</span><h3>Kling AI</h3><p>Художественная визуализация</p></div>
+            <div class="card" style="border-color: #ff9900;"><span class="badge">Voice</span><h3>ElevenLabs</h3><p>Голосовые синтезаторы</p></div>
         </div>
     </section>
 
-    <!-- УСЛУГИ -->
-    <section id="services">
-        <div class="section-heading">Услуги <span>/ что мы делаем</span></div>
-        <div class="cards-grid">
-            <!-- Веб-сервисы -->
-            <article class="card">
-                <div class="card-inner">
-                    <div>
-                        <div class="card-badge">
-                            <div class="card-icon-dot">🧩</div>
-                            Веб-приложения под ключ
-                        </div>
-                        <h2 class="card-title-main">Современные веб-сервисы</h2>
-                        <div class="card-sub">
-                            Разрабатываем backend и сервисы под ваши процессы: от MVP до
-                            высоконагруженных систем с интеграциями и аналитикой.
-                        </div>
-                        <ul class="card-list">
-                            <li>Java, Spring Boot, PostgreSQL, Kafka</li>
-                            <li>REST API, микросервисы, авторизация, роли</li>
-                            <li>Мониторинг, логирование, SLA и поддержка</li>
-                        </ul>
-                    </div>
-                    <div class="card-visual">
-                        <div class="card-visual-tag">api · backend</div>
-                        <div class="card-visual-lines">
-                            <div class="card-line"></div>
-                            <div class="card-line"></div>
-                            <div class="card-line"></div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Тендеры -->
-            <article class="card">
-                <div class="card-inner">
-                    <div>
-                        <div class="card-badge">
-                            <div class="card-icon-dot">📑</div>
-                            Тендерная разработка
-                        </div>
-                        <h2 class="card-title-main">Проекты по 44-ФЗ / 223-ФЗ</h2>
-                        <div class="card-sub">
-                            Берём на себя техническую часть тендера: от проработки ТЗ до сдачи
-                            и сопровождения. Понимаем специфику госсектора и корпораций.
-                        </div>
-                        <ul class="card-list">
-                            <li>Выполнение требований заказчика и регламентов</li>
-                            <li>Архитектура, интеграции, отчётность, доработки</li>
-                            <li>Опыт в промышленных и ведомственных системах</li>
-                        </ul>
-                    </div>
-                    <div class="card-visual">
-                        <div class="card-visual-tag">44-ФЗ · 223-ФЗ</div>
-                        <div class="card-visual-lines">
-                            <div class="card-line"></div>
-                            <div class="card-line"></div>
-                            <div class="card-line"></div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-
-            <!-- Архитектура и Data/AI -->
-            <article class="card">
-                <div class="card-inner">
-                    <div>
-                        <div class="card-badge">
-                            <div class="card-icon-dot">🧠</div>
-                            Архитектура и Data/AI
-                        </div>
-                        <h2 class="card-title-main">Архитектура, данные и ИИ</h2>
-                        <div class="card-sub">
-                            Помогаем выстроить архитектуру ПО и использовать данные и нейросети:
-                            от схем интеграции до генерации контента и аналитики.
-                        </div>
-                        <ul class="card-list">
-                            <li>Архитектурные схемы, BPMN, документация</li>
-                            <li>Data/AI-модули, рекомендации, агенты</li>
-                            <li>Генерация изображений и видео: карточки маркетплейсов,
-                                преленды, видео-поздравления</li>
-                        </ul>
-                    </div>
-                    <div class="card-visual">
-                        <div class="card-visual-tag">data · ai · design</div>
-                        <div class="card-visual-lines">
-                            <div class="card-line"></div>
-                            <div class="card-line"></div>
-                            <div class="card-line"></div>
-                        </div>
-                    </div>
-                </div>
-            </article>
+    <section id="portfolio" class="section">
+        <div class="gallery-grid">
+            <div class="gallery-item"><img src="assets/albom3.jpg" alt="Work"><div class="gallery-overlay">ГЕНЕРАЦИЯ МУЗЫКИ</div></div>
+            <div class="gallery-item"><img src="assets/albom4.jpg" alt="Work"><div class="gallery-overlay">ГЕНЕРАЦИЯ ИЛЛЮСТРАЦИИ</div></div>
+            <div class="gallery-item"><img src="assets/albom2.jpg" alt="Work"><div class="gallery-overlay">КАРТОЧКИ ТОВАРОВ WB & OZON</div></div>
+            <div class="gallery-item"><img src="assets/albom1.jpg" alt="Work"><div class="gallery-overlay">РАЗРАБОТКА САЙТОВ И ПРИЛОЖЕНИЙ</div></div>
         </div>
     </section>
 
-    <!-- НАМ ДОВЕРЯЮТ -->
-    <section id="trust">
-        <div class="section-heading">Нам доверяют</div>
-        <div class="trust-grid">
-            <div class="trust-card">
-                <div class="trust-label">Металлургия</div>
-                <div class="trust-name nlmk">НЛМК</div>
-                <div class="trust-note">
-                    Сквозной трекинг металлопродукции, интеграция с MES/WMS,
-                    мониторинг и аналитика.
-                </div>
-            </div>
-            <div class="trust-card">
-                <div class="trust-label">Транспорт</div>
-                <div class="trust-name rzd">Российские железные дороги</div>
-                <div class="trust-note">
-                    Распределённая EDI-платформа электронного документооборота
-                    и интеграции.
-                </div>
-            </div>
-            <div class="trust-card">
-                <div class="trust-label">Ритейл</div>
-                <div class="trust-name ikea">IKEA</div>
-                <div class="trust-note">
-                    Опыт в домене розничной торговли, клиентских сервисов
-                    и внутренних процессов.
-                </div>
-            </div>
-            <div class="trust-card">
-                <div class="trust-label">Маркетплейсы</div>
-                <div class="trust-name ozon">OZON</div>
-                <div class="trust-note">
-                    Аналитика, оптимизация карточек, автоматизация задач продавцов
-                    и генерация контента с ИИ.
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- КОНТАКТЫ -->
-    <section id="contacts" class="contact-section">
-        <div class="contact-headline">Давайте обсудим ваш проект</div>
-        <div class="contact-subline">
-            Коротко расскажите о задаче — мы предложим вариант решения, стек и ориентировочные сроки.
-            Можно начать с простого сообщения в Telegram.
-        </div>
-        <div class="contact-grid">
-            <div class="contact-item">
-                <div class="contact-label">Telegram</div>
-                <div class="contact-value">
-                    <a href="https://t.me/javavit_ru" target="_blank">@javavit_ru</a><br>
-                    <span style="font-size:0.85rem;opacity:0.8;">
-                        личный: <a href="https://t.me/karen_ahper" target="_blank">@karen_ahper</a>
-                    </span>
-                </div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-label">Email</div>
-                <div class="contact-value">
-                    <a href="mailto:info@javavit.ru">info@javavit.ru</a>
-                </div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-label">GitHub</div>
-                <div class="contact-value">
-                    <a href="https://github.com/Pekar7" target="_blank">github.com/Pekar7</a>
-                </div>
-            </div>
-            <div class="contact-item">
-                <div class="contact-label">Резюме</div>
-                <div class="contact-value">
-                    <a href="resume.html" target="_blank">Senior Java Developer — резюме</a>
-                </div>
+    <section id="contact" class="section" style="background: radial-gradient(circle at center, #1a002e 0%, #050011 100%); text-align: center;">
+        <h2 class="section-title">Сотрудничество</h2>
+        
+        <div class="contact-card">
+            <p class="contact-intro-text">
+                Давайте обсудим ваш проект:<br>
+                Коротко расскажите о задаче — мы предложим вариант решения, стек и ориентировочные сроки и обсудим по стоимости. Можно начать с простого сообщения в Telegram.
+            </p>
+            
+            <div class="contact-list">
+                <a href="https://t.me/javavit_ru" target="_blank" class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.894 8.221l-1.97 9.28c-.145.658-.537.818-1.084.508l-3-2.21-1.446 1.394c-.16.16-.295.293-.6.293l.214-3.054 5.56-5.022c.24-.213-.054-.334-.373-.121l-6.869 4.326-2.96-.924c-.64-.203-.658-.64.135-.954l11.566-4.458c.538-.196 1.006.128.832.932z"/></svg>
+                    <span>@javavit_ru</span>
+                </a>
+                <a href="mailto:info@javavit.ru" class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M12 12.713l-11.985-9.713h23.971l-11.986 9.713zm-5.425-1.822l-6.575-5.329v12.501l6.575-7.172zm10.85 0l6.575 7.172v-12.501l-6.575 5.329zm-1.157 1.778l-1.254 1.016-1.013-.821-1.014.821-1.253-1.016-5.588 6.094h15.711l-5.589-6.094z"/></svg>
+                    <span>info@javavit.ru</span>
+                </a>
+                <a href="https://github.com/Pekar7" target="_blank" class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    <span>github.com/Pekar7</span>
+                </a>
+                <a href="tel:+79332020102" class="contact-item">
+                    <svg class="contact-icon" viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+                    <span>8 (933) 202-01-02</span>
+                </a>
             </div>
         </div>
     </section>
 
     <footer>
-        © <span id="year"></span> JavaVIT — разработка на заказ. Сделано с любовью к Java и аккуратной архитектуре.
+        <p>© 2025 J-VIT студия. ИП: Петросян Карен Эдуардович.</p>
     </footer>
-</main>
 
-<script>
-    // Год в футере
-    document.getElementById('year').textContent = new Date().getFullYear();
+    <script>
+        const canvas = document.getElementById('neural-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        let mouse = { x: null, y: null };
 
-    // Частицы на фоне
-    (function createParticles() {
-        const layer = document.getElementById('particles');
-        const count = 70;
-        for (let i = 0; i < count; i++) {
-            const dot = document.createElement('div');
-            dot.style.position = 'absolute';
-            dot.style.width = '3px';
-            dot.style.height = '3px';
-            dot.style.borderRadius = '999px';
-            dot.style.background = 'rgba(129,140,248,0.6)';
-            dot.style.left = Math.random() * 100 + '%';
-            dot.style.top = Math.random() * 100 + '%';
-            const duration = 12 + Math.random() * 16;
-            const delay = Math.random() * 16;
-            dot.style.opacity = '0';
-            dot.style.animation = `particleFloat ${duration}s ${delay}s linear infinite`;
-            layer.appendChild(dot);
+        window.addEventListener('mousemove', e => { mouse.x = e.x; mouse.y = e.y; });
+        window.addEventListener('resize', () => { width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight; });
+        width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width; this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 1.5; this.vy = (Math.random() - 0.5) * 1.5;
+                this.size = Math.random() * 2 + 1; this.color = Math.random() > 0.5 ? '#00f2ea' : '#ff00cc';
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+                let dx = mouse.x - this.x, dy = mouse.y - this.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if (dist < 200) {
+                    this.x -= (dx/dist) * ((200-dist)/200) * 3;
+                    this.y -= (dy/dist) * ((200-dist)/200) * 3;
+                }
+            }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI*2); ctx.fillStyle=this.color; ctx.fill(); }
         }
-    })();
 
-    // Лёгкий параллакс для code-панели
-    const panel = document.getElementById('codePanel');
-    if (panel) {
-        panel.addEventListener('mousemove', (e) => {
-            const rect = panel.getBoundingClientRect();
-            const x = (e.clientX - rect.left) / rect.width - 0.5;
-            const y = (e.clientY - rect.top) / rect.height - 0.5;
-            panel.style.transform =
-                `rotateX(${18 - y * 6}deg) rotateY(${-18 + x * 6}deg)`;
+        function init() { particles = []; for(let i=0; i<60; i++) particles.push(new Particle()); }
+        function animate() {
+            ctx.clearRect(0,0,width,height);
+            for(let i=0; i<particles.length; i++) {
+                particles[i].update(); particles[i].draw();
+                for(let j=i; j<particles.length; j++) {
+                    let dx=particles[i].x-particles[j].x, dy=particles[i].y-particles[j].y;
+                    let dist=Math.sqrt(dx*dx+dy*dy);
+                    if(dist<150) {
+                        ctx.beginPath(); ctx.strokeStyle='rgba(100,100,255,'+(1-dist/150)*0.5+')';
+                        ctx.lineWidth=1; ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        init(); animate();
+
+        const textEl = document.getElementById('typewriter-text');
+        const texts = ["Java Backend Development |", "AI Generated Art & Video |", "Music Visualization |"];
+        let tIdx=0, cIdx=0, isDel=false;
+        function type() {
+            let cur = texts[tIdx];
+            textEl.innerText = cur.substring(0, isDel ? cIdx-- : cIdx++);
+            if(!isDel && cIdx === cur.length) { isDel=true; setTimeout(type, 2000); }
+            else if(isDel && cIdx===0) { isDel=false; tIdx=(tIdx+1)%texts.length; setTimeout(type, 500); }
+            else setTimeout(type, isDel?50:100);
+        }
+        type();
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const targetSection = document.getElementById(targetId);
+                if(targetSection){
+                    window.scrollTo({
+                        top: targetSection.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
         });
-        panel.addEventListener('mouseleave', () => {
-            panel.style.transform = 'rotateX(18deg) rotateY(-18deg)';
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= (sectionTop - 150)) {
+                    current = section.getAttribute('id');
+                }
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
         });
-    }
-</script>
+
+        // Видео
+        const video = document.getElementById("service-video");
+        if (video) {
+            video.muted = true;
+            video.play().catch(() => {});
+        }
+
+        // Пасхалка на красной кнопке окна
+        function attachCloseEasterEgg() {
+            const techWindows = document.querySelectorAll('.tech-window');
+            techWindows.forEach(win => {
+                const closeBtn = win.querySelector('.dot-close');
+                if (!closeBtn) return;
+                closeBtn.addEventListener('click', () => {
+                    if (win.classList.contains('shaking')) return;
+                    win.classList.add('shaking');
+                    showToast(win, 'Сломаешь! Не балуйся 🙂');
+                    setTimeout(() => win.classList.remove('shaking'), 600);
+                });
+            });
+        }
+
+        function showToast(container, text) {
+            const existing = container.querySelector('.toast-bubble');
+            if (existing) existing.remove();
+
+            const toast = document.createElement('div');
+            toast.className = 'toast-bubble';
+            toast.textContent = text;
+            container.appendChild(toast);
+
+            requestAnimationFrame(() => {
+                toast.classList.add('visible');
+            });
+
+            setTimeout(() => {
+                toast.classList.remove('visible');
+                setTimeout(() => toast.remove(), 200);
+            }, 2000);
+        }
+
+        attachCloseEasterEgg();
+    </script>
 </body>
 </html>
